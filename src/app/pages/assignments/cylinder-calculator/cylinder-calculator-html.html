@@ -1,0 +1,154 @@
+<div class="cylinder-calculator-container">
+  <nz-card>
+    <h1 class="page-title">
+      <span nz-icon nzType="calculator" nzTheme="outline"></span>
+      圆柱体计算器
+    </h1>
+    
+    <p class="page-description">
+      输入圆柱体的半径和高度，计算其表面积和体积。支持实时计算和可视化展示。
+    </p>
+
+    <nz-divider></nz-divider>
+
+    <div nz-row [nzGutter]="24">
+      <!-- 输入区域 -->
+      <div nz-col [nzSpan]="12" [nzXs]="24">
+        <nz-card nzTitle="输入参数" class="input-card">
+          <form nz-form [nzLayout]="'vertical'">
+            <nz-form-item>
+              <nz-form-label>半径 (r)</nz-form-label>
+              <nz-form-control>
+                <nz-input-group nzAddOnAfter="单位">
+                  <input 
+                    nz-input 
+                    type="number" 
+                    placeholder="请输入半径" 
+                    [(ngModel)]="radius"
+                    (keypress)="handleKeyPress($event)"
+                    name="radius" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label>高度 (h)</nz-form-label>
+              <nz-form-control>
+                <nz-input-group nzAddOnAfter="单位">
+                  <input 
+                    nz-input 
+                    type="number" 
+                    placeholder="请输入高度" 
+                    [(ngModel)]="height"
+                    (keypress)="handleKeyPress($event)"
+                    name="height" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-alert 
+              *ngIf="showError"
+              nzType="error"
+              [nzMessage]="errorMessage"
+              nzShowIcon
+              class="error-alert">
+            </nz-alert>
+
+            <div class="button-group">
+              <button nz-button nzType="primary" (click)="calculate()">
+                <span nz-icon nzType="calculator"></span>
+                计算
+              </button>
+              <button nz-button (click)="reset()">
+                <span nz-icon nzType="reload"></span>
+                重置
+              </button>
+            </div>
+          </form>
+        </nz-card>
+
+        <!-- 公式说明 -->
+        <nz-card nzTitle="计算公式" class="formula-card">
+          <div class="formula-item">
+            <h4>表面积公式：</h4>
+            <p class="formula">S = 2πr² + 2πrh = 2πr(r + h)</p>
+          </div>
+          <div class="formula-item">
+            <h4>体积公式：</h4>
+            <p class="formula">V = πr²h</p>
+          </div>
+          <div class="formula-note">
+            <p>其中：r 为底面半径，h 为高度，π ≈ 3.14159</p>
+          </div>
+        </nz-card>
+      </div>
+
+      <!-- 结果展示区域 -->
+      <div nz-col [nzSpan]="12" [nzXs]="24">
+        <nz-card nzTitle="计算结果" class="result-card">
+          <div nz-row [nzGutter]="16">
+            <div nz-col [nzSpan]="12">
+              <nz-statistic
+                [nzValue]="formatNumber(surfaceArea)"
+                [nzTitle]="'表面积'"
+                [nzSuffix]="surfaceArea ? '平方单位' : ''"
+                [nzValueStyle]="{ color: '#3f8600' }">
+              </nz-statistic>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <nz-statistic
+                [nzValue]="formatNumber(volume)"
+                [nzTitle]="'体积'"
+                [nzSuffix]="volume ? '立方单位' : ''"
+                [nzValueStyle]="{ color: '#cf1322' }">
+              </nz-statistic>
+            </div>
+          </div>
+        </nz-card>
+
+        <!-- 可视化展示 -->
+        <nz-card nzTitle="图形展示" class="visualization-card" *ngIf="showVisualization">
+          <svg width="300" height="300" viewBox="0 0 300 300">
+            <!-- 网格背景 -->
+            <defs>
+              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#f0f0f0" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="300" height="300" fill="url(#grid)" />
+            
+            <!-- 圆柱体 -->
+            <g transform="translate(0, 0)">
+              <!-- 主体 -->
+              <path [attr.d]="getCylinderPath()" fill="#1890ff" opacity="0.7" stroke="#0050b3" stroke-width="2"/>
+              <!-- 顶部 -->
+              <path [attr.d]="getTopEllipsePath()" fill="#40a9ff" stroke="#0050b3" stroke-width="2"/>
+            </g>
+            
+            <!-- 标注 -->
+            <text x="150" y="280" text-anchor="middle" font-size="14" fill="#333">
+              r = {{ radius || 0 }}, h = {{ height || 0 }}
+            </text>
+          </svg>
+        </nz-card>
+      </div>
+    </div>
+
+    <nz-divider></nz-divider>
+
+    <!-- 使用说明 -->
+    <div class="usage-tips">
+      <h3>
+        <span nz-icon nzType="info-circle"></span>
+        使用说明
+      </h3>
+      <ul>
+        <li>输入圆柱体的半径和高度，单位自定</li>
+        <li>点击"计算"按钮或按回车键进行计算</li>
+        <li>系统会自动计算表面积和体积</li>
+        <li>计算结果会以可视化形式展示</li>
+        <li>点击"重置"按钮可清空所有数据</li>
+      </ul>
+    </div>
+  </nz-card>
+</div>

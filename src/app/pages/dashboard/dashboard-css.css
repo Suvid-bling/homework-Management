@@ -1,0 +1,150 @@
+.dashboard-container {
+  position: relative;
+}
+
+nz-breadcrumb {
+  margin-bottom: 24px;
+}
+
+.stats-section {
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  text-align: center;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card ::ng-deep .ant-statistic-title {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.stat-card ::ng-deep .ant-statistic-content {
+  color: #1890ff;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.stat-card ::ng-deep .ant-statistic-content-prefix {
+  margin-right: 8px;
+}
+
+.stat-card.completed ::ng-deep .ant-statistic-content {
+  color: #52c41a;
+}
+
+.stat-card.progress ::ng-deep .ant-statistic-content {
+  color: #fa8c16;
+}
+
+.stat-card.grade ::ng-deep .ant-statistic-content {
+  color: #f5222d;
+}
+
+.assignments-section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title span[nz-icon] {
+  font-size: 20px;
+  color: #1890ff;
+}
+
+.assignment-card {
+  height: 100%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.assignment-card:hover {
+  border-color: #1890ff;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+}
+
+.assignment-card.completed {
+  border-color: #52c41a;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.card-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.85);
+  flex: 1;
+  margin-right: 8px;
+}
+
+.assignment-desc {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.assignment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+  z-index: 999;
+}
+
+.fab:hover {
+  transform: scale(1.1);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .stat-card ::ng-deep .ant-statistic-content {
+    font-size: 24px;
+  }
+  
+  .assignment-card {
+    margin-bottom: 16px;
+  }
+  
+  .fab {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+}

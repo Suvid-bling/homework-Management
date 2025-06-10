@@ -1,0 +1,228 @@
+<div class="rectangle-class-container">
+  <nz-card>
+    <h1 class="page-title">
+      <span nz-icon nzType="block" nzTheme="outline"></span>
+      模块化编程 - 矩形类
+    </h1>
+    
+    <p class="page-description">
+      演示面向对象编程中的类定义和使用，包括属性、方法、构造函数等概念。
+      通过创建矩形类来展示模块化编程的基本原理。
+    </p>
+
+    <nz-divider></nz-divider>
+
+    <nz-tabs>
+      <!-- 类定义标签页 -->
+      <nz-tab nzTitle="类定义">
+        <nz-card class="code-card">
+          <h3>矩形类源代码</h3>
+          <pre class="code-block"><code>{{ classDefinitionCode }}</code></pre>
+          
+          <nz-divider></nz-divider>
+          
+          <h3>使用示例</h3>
+          <pre class="code-block"><code>{{ usageExampleCode }}</code></pre>
+        </nz-card>
+      </nz-tab>
+
+      <!-- 交互演示标签页 -->
+      <nz-tab nzTitle="交互演示">
+        <div nz-row [nzGutter]="24">
+          <!-- 输入和控制区域 -->
+          <div nz-col [nzSpan]="12" [nzXs]="24">
+            <nz-card nzTitle="创建矩形对象" class="input-card">
+              <form nz-form [nzLayout]="'vertical'">
+                <nz-form-item>
+                  <nz-form-label>宽度</nz-form-label>
+                  <nz-form-control>
+                    <input 
+                      nz-input 
+                      type="number" 
+                      placeholder="请输入矩形宽度" 
+                      [(ngModel)]="inputWidth"
+                      (keypress)="handleKeyPress($event)"
+                      name="width" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label>高度</nz-form-label>
+                  <nz-form-control>
+                    <input 
+                      nz-input 
+                      type="number" 
+                      placeholder="请输入矩形高度" 
+                      [(ngModel)]="inputHeight"
+                      (keypress)="handleKeyPress($event)"
+                      name="height" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-alert 
+                  *ngIf="showError"
+                  nzType="error"
+                  [nzMessage]="errorMessage"
+                  nzShowIcon
+                  class="error-alert">
+                </nz-alert>
+
+                <div class="button-group">
+                  <button nz-button nzType="primary" (click)="createRectangle()">
+                    <span nz-icon nzType="plus"></span>
+                    创建矩形
+                  </button>
+                  <button nz-button (click)="reset()">
+                    <span nz-icon nzType="reload"></span>
+                    重置
+                  </button>
+                </div>
+              </form>
+            </nz-card>
+
+            <!-- 当前矩形信息 -->
+            <nz-card nzTitle="当前矩形信息" class="info-card" *ngIf="currentRectangle">
+              <div class="info-item">
+                <span class="label">宽度:</span>
+                <span class="value">{{ currentRectangle.getWidth() }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">高度:</span>
+                <span class="value">{{ currentRectangle.getHeight() }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">面积:</span>
+                <span class="value area">{{ currentRectangle.getArea() }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">周长:</span>
+                <span class="value perimeter">{{ currentRectangle.getPerimeter() }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">对角线:</span>
+                <span class="value">{{ currentRectangle.getDiagonal().toFixed(2) }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">类型:</span>
+                <nz-tag [nzColor]="currentRectangle.isSquare() ? 'green' : 'blue'">
+                  {{ currentRectangle.isSquare() ? '正方形' : '矩形' }}
+                </nz-tag>
+              </div>
+              <nz-divider></nz-divider>
+              <div class="display-result">
+                <strong>display() 方法输出:</strong>
+                <p>{{ currentRectangle.display() }}</p>
+              </div>
+            </nz-card>
+          </div>
+
+          <!-- 可视化区域 -->
+          <div nz-col [nzSpan]="12" [nzXs]="24">
+            <nz-card nzTitle="图形可视化" class="visualization-card">
+              <svg width="250" height="250" viewBox="0 0 250 250" *ngIf="currentRectangle">
+                <!-- 网格背景 -->
+                <defs>
+                  <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#f0f0f0" stroke-width="0.5"/>
+                  </pattern>
+                </defs>
+                <rect width="250" height="250" fill="url(#grid)" />
+                
+                <!-- 矩形 -->
+                <path 
+                  [attr.d]="getRectanglePath()" 
+                  fill="#1890ff" 
+                  fill-opacity="0.3"
+                  stroke="#1890ff" 
+                  stroke-width="2"/>
+                
+                <!-- 标注 -->
+                <text x="125" y="240" text-anchor="middle" font-size="12" fill="#666">
+                  宽: {{ currentRectangle.getWidth() }} × 高: {{ currentRectangle.getHeight() }}
+                </text>
+              </svg>
+              
+              <div class="no-data" *ngIf="!currentRectangle">
+                <span nz-icon nzType="picture" style="font-size: 48px; color: #ccc;"></span>
+                <p>创建矩形后显示图形</p>
+              </div>
+            </nz-card>
+
+            <!-- 特性说明 -->
+            <nz-card nzTitle="面向对象特性" class="features-card">
+              <div class="feature-item">
+                <span nz-icon nzType="safety" class="feature-icon"></span>
+                <div class="feature-content">
+                  <h4>封装性</h4>
+                  <p>属性设为私有，通过方法访问</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <span nz-icon nzType="api" class="feature-icon"></span>
+                <div class="feature-content">
+                  <h4>方法</h4>
+                  <p>提供计算面积、周长等功能</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <span nz-icon nzType="build" class="feature-icon"></span>
+                <div class="feature-content">
+                  <h4>构造函数</h4>
+                  <p>初始化对象的宽度和高度</p>
+                </div>
+              </div>
+            </nz-card>
+          </div>
+        </div>
+      </nz-tab>
+
+      <!-- 历史记录标签页 -->
+      <nz-tab nzTitle="历史记录" [nzBadge]="rectangleHistory.length">
+        <nz-card>
+          <div class="history-header">
+            <h3>创建历史</h3>
+            <button nz-button nzSize="small" (click)="clearHistory()" [disabled]="rectangleHistory.length === 0">
+              <span nz-icon nzType="delete"></span>
+              清空历史
+            </button>
+          </div>
+          
+          <nz-table 
+            #historyTable 
+            [nzData]="rectangleHistory" 
+            [nzPageSize]="10"
+            [nzShowPagination]="rectangleHistory.length > 10">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>宽度</th>
+                <th>高度</th>
+                <th>面积</th>
+                <th>周长</th>
+                <th>对角线</th>
+                <th>类型</th>
+                <th>创建时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of historyTable.data">
+                <td>{{ record.id }}</td>
+                <td>{{ record.width }}</td>
+                <td>{{ record.height }}</td>
+                <td><strong>{{ record.area }}</strong></td>
+                <td>{{ record.perimeter }}</td>
+                <td>{{ record.diagonal.toFixed(2) }}</td>
+                <td>
+                  <nz-tag [nzColor]="record.isSquare ? 'green' : 'blue'">
+                    {{ record.isSquare ? '正方形' : '矩形' }}
+                  </nz-tag>
+                </td>
+                <td>{{ record.createTime | date:'HH:mm:ss' }}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-card>
+      </nz-tab>
+    </nz-tabs>
+  </nz-card>
+</div>

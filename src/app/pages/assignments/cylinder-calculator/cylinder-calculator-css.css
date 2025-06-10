@@ -1,0 +1,164 @@
+.cylinder-calculator-container {
+  padding: 0;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-title span[nz-icon] {
+  color: #1890ff;
+}
+
+.page-description {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.input-card {
+  margin-bottom: 24px;
+  height: 100%;
+}
+
+.error-alert {
+  margin-bottom: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.button-group button {
+  flex: 1;
+}
+
+.formula-card {
+  margin-bottom: 24px;
+  background: #f6f8ff;
+}
+
+.formula-item {
+  margin-bottom: 16px;
+}
+
+.formula-item h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.formula {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 16px;
+  color: #1890ff;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.formula-note {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.formula-note p {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  margin: 0;
+}
+
+.result-card {
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #f6ffed 0%, #f0f8ff 100%);
+}
+
+.result-card ::ng-deep .ant-statistic-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.result-card ::ng-deep .ant-statistic-content {
+  font-size: 24px;
+}
+
+.result-card ::ng-deep .ant-statistic-content-suffix {
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+.visualization-card {
+  text-align: center;
+  background: #fafafa;
+}
+
+.visualization-card svg {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.usage-tips {
+  background: #fffbe6;
+  border: 1px solid #ffe58f;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.usage-tips h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.usage-tips h3 span[nz-icon] {
+  color: #faad14;
+}
+
+.usage-tips ul {
+  margin: 0;
+  padding-left: 24px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.usage-tips li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+/* 输入框样式优化 */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+  height: 28px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .button-group button {
+    width: 100%;
+  }
+  
+  .formula {
+    font-size: 14px;
+    word-break: break-all;
+  }
+}

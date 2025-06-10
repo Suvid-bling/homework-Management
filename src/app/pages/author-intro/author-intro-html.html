@@ -1,0 +1,111 @@
+<div class="author-intro-container">
+  <div nz-row [nzGutter]="24">
+    <!-- 左侧个人信息卡片 -->
+    <div nz-col [nzSpan]="8" [nzXs]="24" [nzSm]="24" [nzMd]="8">
+      <nz-card class="profile-card">
+        <div class="avatar-section">
+          <nz-avatar 
+            [nzSize]="120" 
+            nzIcon="user"
+            [nzText]="personalInfo.name[0]"
+            class="profile-avatar">
+          </nz-avatar>
+          <h2 class="profile-name">{{ personalInfo.name }}</h2>
+          <p class="profile-motto">{{ personalInfo.motto }}</p>
+        </div>
+        
+        <nz-descriptions [nzColumn]="1" nzSize="small" class="info-descriptions">
+          <nz-descriptions-item nzTitle="性别">{{ personalInfo.gender }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="班级">{{ personalInfo.class }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="学号">{{ personalInfo.studentId }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="邮箱">
+            <a href="mailto:{{ personalInfo.email }}">{{ personalInfo.email }}</a>
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="GitHub">
+            <a [href]="'https://' + personalInfo.github" target="_blank">
+              <span nz-icon nzType="github"></span> {{ personalInfo.github }}
+            </a>
+          </nz-descriptions-item>
+        </nz-descriptions>
+      </nz-card>
+
+      <!-- 兴趣爱好卡片 -->
+      <nz-card class="hobbies-card" nzTitle="兴趣爱好">
+        <div class="hobbies-grid">
+          <div class="hobby-item" *ngFor="let hobby of hobbies">
+            <nz-badge [nzColor]="hobby.color">
+              <div class="hobby-icon-wrapper">
+                <span nz-icon [nzType]="hobby.icon" class="hobby-icon"></span>
+              </div>
+            </nz-badge>
+            <span class="hobby-name">{{ hobby.name }}</span>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+
+    <!-- 右侧内容 -->
+    <div nz-col [nzSpan]="16" [nzXs]="24" [nzSm]="24" [nzMd]="16">
+      <!-- 技能图表 -->
+      <nz-card nzTitle="技术栈" class="skills-card">
+        <div class="skills-list">
+          <div class="skill-item" *ngFor="let skill of skills">
+            <div class="skill-header">
+              <span class="skill-name">{{ skill.name }}</span>
+              <span class="skill-percent">{{ skill.level }}%</span>
+            </div>
+            <nz-progress 
+              [nzPercent]="skill.level" 
+              [nzStrokeColor]="skill.color"
+              nzSize="small">
+            </nz-progress>
+          </div>
+        </div>
+      </nz-card>
+
+      <!-- 学习经历时间轴 -->
+      <nz-card nzTitle="学习经历" class="timeline-card">
+        <nz-timeline>
+          <nz-timeline-item *ngFor="let item of timeline" [nzColor]="item.color">
+            <p class="timeline-date">{{ item.date }}</p>
+            <p class="timeline-event">{{ item.event }}</p>
+          </nz-timeline-item>
+        </nz-timeline>
+      </nz-card>
+
+      <!-- 项目亮点 -->
+      <nz-card nzTitle="项目亮点" class="highlights-card">
+        <div nz-row [nzGutter]="16">
+          <div nz-col [nzSpan]="12">
+            <div class="highlight-item">
+              <span nz-icon nzType="code" class="highlight-icon"></span>
+              <h4>代码规范</h4>
+              <p>遵循Angular最佳实践，代码结构清晰，注释完整</p>
+            </div>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <div class="highlight-item">
+              <span nz-icon nzType="mobile" class="highlight-icon"></span>
+              <h4>响应式设计</h4>
+              <p>完美适配各种设备，提供优秀的移动端体验</p>
+            </div>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <div class="highlight-item">
+              <span nz-icon nzType="rocket" class="highlight-icon"></span>
+              <h4>性能优化</h4>
+              <p>使用懒加载、虚拟滚动等技术优化应用性能</p>
+            </div>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <div class="highlight-item">
+              <span nz-icon nzType="heart" class="highlight-icon"></span>
+              <h4>用户体验</h4>
+              <p>精心设计的交互和动画，提供流畅的使用体验</p>
+            </div>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</div>

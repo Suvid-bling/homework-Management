@@ -1,0 +1,192 @@
+.author-intro-container {
+  padding: 0;
+}
+
+.profile-card {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.avatar-section {
+  padding: 24px 0;
+}
+
+.profile-avatar {
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, #1890ff, #40a9ff);
+  font-size: 48px;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.profile-motto {
+  color: rgba(0, 0, 0, 0.65);
+  font-style: italic;
+  margin-bottom: 24px;
+}
+
+.info-descriptions {
+  text-align: left;
+  margin-top: 24px;
+}
+
+.info-descriptions ::ng-deep .ant-descriptions-item-label {
+  font-weight: 500;
+}
+
+.hobbies-card {
+  margin-bottom: 24px;
+}
+
+.hobbies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.hobby-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hobby-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  background: #f0f2f5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  transition: all 0.3s;
+}
+
+.hobby-item:hover .hobby-icon-wrapper {
+  background: #e6f7ff;
+  transform: scale(1.1);
+}
+
+.hobby-icon {
+  font-size: 24px;
+  color: #1890ff;
+}
+
+.hobby-name {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.skills-card {
+  margin-bottom: 24px;
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skill-item {
+  width: 100%;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.skill-name {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.skill-percent {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+}
+
+.timeline-card {
+  margin-bottom: 24px;
+}
+
+.timeline-date {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.85);
+  margin-bottom: 4px;
+}
+
+.timeline-event {
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 1.5;
+}
+
+.highlights-card {
+  margin-bottom: 24px;
+}
+
+.highlight-item {
+  text-align: center;
+  padding: 20px;
+  background: #fafafa;
+  border-radius: 8px;
+  transition: all 0.3s;
+  height: 100%;
+  margin-bottom: 16px;
+}
+
+.highlight-item:hover {
+  background: #f0f2f5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.highlight-icon {
+  font-size: 36px;
+  color: #1890ff;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.highlight-item h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.highlight-item p {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .hobbies-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .hobby-icon-wrapper {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .hobby-icon {
+    font-size: 20px;
+  }
+  
+  .profile-avatar {
+    width: 100px !important;
+    height: 100px !important;
+    font-size: 40px;
+  }
+}

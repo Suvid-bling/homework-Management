@@ -1,0 +1,110 @@
+.app-layout {
+  min-height: 100vh;
+}
+
+nz-header {
+  background: linear-gradient(135deg, #1890ff, #40a9ff);
+  padding: 0;
+  height: 64px;
+  line-height: 64px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 24px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.logo span[nz-icon] {
+  font-size: 28px;
+  margin-right: 12px;
+}
+
+.logo-text {
+  color: white;
+}
+
+.header-menu {
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
+
+.username {
+  font-size: 14px;
+}
+
+.menu-sidebar {
+  overflow: auto;
+  height: calc(100vh - 64px);
+  position: fixed;
+  left: 0;
+  top: 64px;
+}
+
+.site-layout {
+  margin-left: 200px;
+  transition: all 0.2s;
+}
+
+.menu-sidebar.ant-layout-sider-collapsed + .site-layout {
+  margin-left: 80px;
+}
+
+.main-content {
+  margin: 24px;
+  padding: 24px;
+  background: #fff;
+  min-height: calc(100vh - 64px - 70px - 48px);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+nz-footer {
+  text-align: center;
+  background: #f0f2f5;
+  padding: 24px 50px;
+}
+
+.footer-content {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 14px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .menu-sidebar {
+    position: relative;
+    top: 0;
+  }
+  
+  .site-layout {
+    margin-left: 0;
+  }
+  
+  .main-content {
+    margin: 12px;
+    padding: 16px;
+  }
+  
+  .logo-text {
+    display: none;
+  }
+}

@@ -1,0 +1,304 @@
+.innovation-intro-container {
+  padding: 0;
+}
+
+.intro-card {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.main-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.main-title span[nz-icon] {
+  color: #faad14;
+  font-size: 32px;
+}
+
+.intro-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(0, 0, 0, 0.65);
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.features-card {
+  margin-bottom: 24px;
+}
+
+.feature-item {
+  text-align: center;
+  padding: 24px;
+  background: #fafafa;
+  border-radius: 8px;
+  height: 100%;
+  transition: all 0.3s;
+}
+
+.feature-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: white;
+}
+
+.feature-icon span[nz-icon] {
+  font-size: 28px;
+}
+
+.feature-item h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.feature-item p {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.tech-stack-card {
+  margin-bottom: 24px;
+}
+
+.tech-item {
+  height: 100%;
+  transition: all 0.3s;
+}
+
+.tech-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tech-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.tech-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.tech-item p {
+  color: rgba(0, 0, 0, 0.65);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.tech-item a {
+  color: #1890ff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.tech-item a:hover {
+  text-decoration: underline;
+}
+
+.timeline-card {
+  margin-bottom: 24px;
+}
+
+.timeline-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.timeline-card h4.finished {
+  color: #52c41a;
+}
+
+.timeline-card p {
+  color: rgba(0, 0, 0, 0.65);
+  margin: 0;
+}
+
+.innovations-card {
+  margin-bottom: 24px;
+}
+
+.innovations-list {
+  display: grid;
+  gap: 16px;
+}
+
+.innovation-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: #f6f8ff;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.innovation-item:hover {
+  background: #e6f0ff;
+  transform: translateX(4px);
+}
+
+.innovation-number {
+  width: 24px;
+  height: 24px;
+  background: #1890ff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.innovation-text {
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.challenges-card {
+  margin-bottom: 24px;
+}
+
+.challenges-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.challenge-item {
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.3s;
+}
+
+.challenge-item:hover {
+  border-color: #1890ff;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.15);
+}
+
+.challenge-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.challenge-icon {
+  color: #ff4d4f;
+  font-size: 20px;
+}
+
+.challenge-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.solution {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-left: 28px;
+}
+
+.solution-icon {
+  color: #52c41a;
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.solution p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 1.6;
+}
+
+.summary-card {
+  background: linear-gradient(135deg, #f6f8ff 0%, #f0f8ff 100%);
+  border: 1px solid #91d5ff;
+}
+
+.summary-content {
+  text-align: center;
+  padding: 24px;
+}
+
+.summary-content h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1890ff;
+}
+
+.summary-content p {
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 1.8;
+  margin-bottom: 16px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.summary-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 24px;
+  }
+  
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .feature-icon span[nz-icon] {
+    font-size: 24px;
+  }
+  
+  .innovation-item {
+    padding: 8px;
+  }
+  
+  .challenge-item {
+    padding: 12px;
+  }
+  
+  .solution {
+    padding-left: 0;
+  }
+}

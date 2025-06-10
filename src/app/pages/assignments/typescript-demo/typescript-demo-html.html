@@ -1,0 +1,68 @@
+<div class="typescript-demo-container">
+  <nz-card>
+    <h1 class="page-title">
+      <span nz-icon nzType="code" nzTheme="outline"></span>
+      TypeScript 数据类型演示
+    </h1>
+    
+    <p class="page-description">
+      本页面展示了 TypeScript 中的各种数据类型，包括基本类型、复合类型和高级类型。
+      每个示例都可以实时运行并查看结果。
+    </p>
+
+    <nz-divider></nz-divider>
+
+    <nz-tabs>
+      <nz-tab *ngFor="let example of dataTypes" [nzTitle]="example.type">
+        <div class="example-container">
+          <div class="example-header">
+            <h3>{{ example.type }}</h3>
+            <p class="example-description">{{ example.description }}</p>
+          </div>
+
+          <div class="code-section">
+            <div class="code-toolbar">
+              <span class="code-label">
+                <span nz-icon nzType="code"></span> 示例代码
+              </span>
+              <div class="code-actions">
+                <button nz-button nzType="text" nzSize="small" (click)="copyCode(example.code)">
+                  <span nz-icon nzType="copy"></span> 复制
+                </button>
+                <button nz-button nzType="primary" nzSize="small" (click)="runExample(example)">
+                  <span nz-icon nzType="play-circle"></span> 运行
+                </button>
+              </div>
+            </div>
+            
+            <pre class="code-block"><code>{{ example.code }}</code></pre>
+          </div>
+
+          <div class="output-section" *ngIf="example.output">
+            <div class="output-header">
+              <span class="output-label">
+                <span nz-icon nzType="desktop"></span> 输出结果
+              </span>
+            </div>
+            <pre class="output-block">{{ example.output }}</pre>
+          </div>
+        </div>
+      </nz-tab>
+    </nz-tabs>
+
+    <nz-divider></nz-divider>
+
+    <div class="tips-section">
+      <h3>
+        <span nz-icon nzType="bulb"></span> 使用提示
+      </h3>
+      <ul>
+        <li>TypeScript 是 JavaScript 的超集，添加了类型系统和其他特性</li>
+        <li>使用类型注解可以提高代码的可维护性和可读性</li>
+        <li>TypeScript 的类型系统在编译时进行检查，运行时会被擦除</li>
+        <li>合理使用 any 类型，尽量使用更具体的类型</li>
+        <li>善用联合类型和交叉类型来构建复杂的类型结构</li>
+      </ul>
+    </div>
+  </nz-card>
+</div>

@@ -1,0 +1,112 @@
+<div class="dashboard-container">
+  <!-- 面包屑导航 -->
+  <nz-breadcrumb>
+    <nz-breadcrumb-item>首页</nz-breadcrumb-item>
+    <nz-breadcrumb-item>作业管理系统概览</nz-breadcrumb-item>
+  </nz-breadcrumb>
+
+  <!-- 统计卡片 -->
+  <div nz-row [nzGutter]="16" class="stats-section">
+    <div nz-col [nzSpan]="6" [nzXs]="24" [nzSm]="12" [nzMd]="6">
+      <nz-card class="stat-card">
+        <nz-statistic
+          [nzValue]="stats.totalAssignments"
+          [nzTitle]="'平时作业'"
+          [nzPrefix]="prefixTplAssignment">
+        </nz-statistic>
+        <ng-template #prefixTplAssignment>
+          <span nz-icon nzType="file-text" nzTheme="outline"></span>
+        </ng-template>
+      </nz-card>
+    </div>
+    
+    <div nz-col [nzSpan]="6" [nzXs]="24" [nzSm]="12" [nzMd]="6">
+      <nz-card class="stat-card completed">
+        <nz-statistic
+          [nzValue]="stats.completedModules"
+          [nzTitle]="'已完成模块'"
+          [nzPrefix]="prefixTplCompleted">
+        </nz-statistic>
+        <ng-template #prefixTplCompleted>
+          <span nz-icon nzType="check-circle" nzTheme="outline"></span>
+        </ng-template>
+      </nz-card>
+    </div>
+    
+    <div nz-col [nzSpan]="6" [nzXs]="24" [nzSm]="12" [nzMd]="6">
+      <nz-card class="stat-card progress">
+        <nz-statistic
+          [nzValue]="stats.completionRate"
+          [nzTitle]="'完成进度'"
+          [nzSuffix]="'%'"
+          [nzPrefix]="prefixTplProgress">
+        </nz-statistic>
+        <ng-template #prefixTplProgress>
+          <span nz-icon nzType="pie-chart" nzTheme="outline"></span>
+        </ng-template>
+      </nz-card>
+    </div>
+    
+    <div nz-col [nzSpan]="6" [nzXs]="24" [nzSm]="12" [nzMd]="6">
+      <nz-card class="stat-card grade">
+        <nz-statistic
+          [nzValue]="stats.expectedGrade"
+          [nzTitle]="'预期评分'"
+          [nzPrefix]="prefixTplGrade">
+        </nz-statistic>
+        <ng-template #prefixTplGrade>
+          <span nz-icon nzType="trophy" nzTheme="outline"></span>
+        </ng-template>
+      </nz-card>
+    </div>
+  </div>
+
+  <!-- 作业列表 -->
+  <nz-card class="assignments-section">
+    <h2 class="section-title">
+      <span nz-icon nzType="profile" nzTheme="outline"></span>
+      平时作业展示
+    </h2>
+    
+    <div nz-row [nzGutter]="[16, 16]">
+      <div nz-col [nzSpan]="8" [nzXs]="24" [nzSm]="12" [nzMd]="8" *ngFor="let assignment of assignments">
+        <nz-card 
+          class="assignment-card" 
+          [class.completed]="assignment.status === 'completed'"
+          [routerLink]="assignment.route"
+          nzHoverable>
+          <div class="card-header">
+            <h3>{{ assignment.title }}</h3>
+            <span 
+              nz-icon 
+              [nzType]="getStatusIcon(assignment.status)"
+              [style.color]="getStatusColor(assignment.status)"
+              nz-tooltip
+              [nzTooltipTitle]="assignment.status === 'completed' ? '已完成' : '待完成'">
+            </span>
+          </div>
+          
+          <p class="assignment-desc">{{ assignment.description }}</p>
+          
+          <div class="assignment-tags">
+            <nz-tag *ngFor="let tag of assignment.tags" [nzColor]="getTagColor(tag)">
+              {{ tag }}
+            </nz-tag>
+          </div>
+        </nz-card>
+      </div>
+    </div>
+  </nz-card>
+
+  <!-- 快速操作按钮 -->
+  <button 
+    nz-button 
+    nzType="primary" 
+    nzShape="circle" 
+    nzSize="large"
+    class="fab"
+    nz-tooltip
+    nzTooltipTitle="添加新作业">
+    <span nz-icon nzType="plus"></span>
+  </button>
+</div>
