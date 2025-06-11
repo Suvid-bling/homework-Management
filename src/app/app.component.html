@@ -9,9 +9,10 @@
       <div class="header-menu">
         <div class="user-info">
           <span class="username">苏子毅</span>
+          <!-- 修复：使用正确的下拉菜单语法 -->
           <nz-dropdown [nzTrigger]="'click'">
             <nz-avatar nzText="苏" nz-dropdown [nzSize]="32"></nz-avatar>
-            <ul nz-menu>
+            <nz-menu nz-menu>
               <li nz-menu-item>
                 <span nz-icon nzType="user"></span>
                 个人信息
@@ -25,7 +26,7 @@
                 <span nz-icon nzType="logout"></span>
                 退出登录
               </li>
-            </ul>
+            </nz-menu>
           </nz-dropdown>
         </div>
       </div>
