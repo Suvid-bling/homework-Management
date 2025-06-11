@@ -1,0 +1,150 @@
+<div class="flexbox-demo-container">
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title">
+      <span class="title-icon">📐</span>
+      CSS Flexbox 布局演示
+    </h1>
+    <p class="page-description">
+      演示CSS Flexbox的各种布局方式，包括水平布局、混合水平布局和混合垂直布局。
+      通过三个独立的组件来展示不同布局效果。
+    </p>
+  </div>
+
+  <!-- Layout Controls -->
+  <div class="layout-controls">
+    <h3>选择布局方式：</h3>
+    <div class="control-buttons">
+      <button 
+        class="control-btn"
+        [class.active]="currentLayout === 'horizontal'"
+        (click)="setLayout('horizontal')">
+        水平布局
+      </button>
+      <button 
+        class="control-btn"
+        [class.active]="currentLayout === 'mixed-horizontal'"
+        (click)="setLayout('mixed-horizontal')">
+        混合水平布局
+      </button>
+      <button 
+        class="control-btn"
+        [class.active]="currentLayout === 'mixed-vertical'"
+        (click)="setLayout('mixed-vertical')">
+        混合垂直布局
+      </button>
+    </div>
+  </div>
+
+  <!-- Layout Demo Area -->
+  <div class="demo-area">
+    <div class="layout-info">
+      <h4>当前布局：{{ getLayoutName() }}</h4>
+      <p>{{ getLayoutDescription() }}</p>
+    </div>
+
+    <!-- Components Container with Dynamic Layout -->
+    <div 
+      class="components-container"
+      [class.layout-horizontal]="currentLayout === 'horizontal'"
+      [class.layout-mixed-horizontal]="currentLayout === 'mixed-horizontal'"
+      [class.layout-mixed-vertical]="currentLayout === 'mixed-vertical'">
+      
+      <!-- Component 1 -->
+      <div class="component-card component-1">
+        <div class="card-header" [style.background-color]="cardData[0].color">
+          <div class="card-icon">{{ cardData[0].icon }}</div>
+          <div class="card-title-section">
+            <h3>{{ cardData[0].title }}</h3>
+            <span class="subtitle">{{ cardData[0].subtitle }}</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>{{ cardData[0].content }}</p>
+          <div class="card-stats">
+            <div class="stat">
+              <span class="stat-label">尺寸:</span>
+              <span class="stat-value">自适应</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">位置:</span>
+              <span class="stat-value">第一个</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Component 2 -->
+      <div class="component-card component-2">
+        <div class="card-header" [style.background-color]="cardData[1].color">
+          <div class="card-icon">{{ cardData[1].icon }}</div>
+          <div class="card-title-section">
+            <h3>{{ cardData[1].title }}</h3>
+            <span class="subtitle">{{ cardData[1].subtitle }}</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>{{ cardData[1].content }}</p>
+          <div class="feature-list">
+            <div class="feature-item">✨ 响应式设计</div>
+            <div class="feature-item">🎨 自定义样式</div>
+            <div class="feature-item">⚡ 高性能</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Component 3 -->
+      <div class="component-card component-3">
+        <div class="card-header" [style.background-color]="cardData[2].color">
+          <div class="card-icon">{{ cardData[2].icon }}</div>
+          <div class="card-title-section">
+            <h3>{{ cardData[2].title }}</h3>
+            <span class="subtitle">{{ cardData[2].subtitle }}</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>{{ cardData[2].content }}</p>
+          <div class="progress-section">
+            <div class="progress-item">
+              <span>完成度</span>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 85%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layout Code Examples -->
+  <div class="code-examples">
+    <h3>当前布局的CSS代码：</h3>
+    <div class="code-block">
+      <pre><code>{{ getCurrentLayoutCode() }}</code></pre>
+    </div>
+  </div>
+
+  <!-- Tips Section -->
+  <div class="tips-section">
+    <h3>💡 Flexbox 布局要点</h3>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h4>🔄 flex-direction</h4>
+        <p>控制主轴方向：row（水平）或 column（垂直）</p>
+      </div>
+      <div class="tip-card">
+        <h4>📏 justify-content</h4>
+        <p>控制主轴对齐：flex-start, center, space-between等</p>
+      </div>
+      <div class="tip-card">
+        <h4>📐 align-items</h4>
+        <p>控制交叉轴对齐：flex-start, center, stretch等</p>
+      </div>
+      <div class="tip-card">
+        <h4>🔧 flex</h4>
+        <p>控制项目的伸缩：flex-grow, flex-shrink, flex-basis</p>
+      </div>
+    </div>
+  </div>
+</div>

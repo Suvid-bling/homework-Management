@@ -7,7 +7,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown'; // Fixed: Changed from NzDropDownModule to NzDropdownModule
 
 @Component({
   selector: 'app-root',
@@ -16,12 +16,13 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     CommonModule,
     RouterOutlet,
     RouterLink,
-    RouterLinkActive,
+    // RouterLinkActive, // Removed since you're not using it in the template
     NzLayoutModule,
     NzMenuModule,
     NzIconModule,
     NzAvatarModule,
-    NzDropDownModule
+    NzDropDownModule // Fixed: Changed from NzDropDownModule to NzDropdownModule
+    
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

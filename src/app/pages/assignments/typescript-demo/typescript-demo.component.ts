@@ -1,14 +1,6 @@
+// typescript-demo.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 
 interface DataTypeExample {
   type: string;
@@ -20,22 +12,387 @@ interface DataTypeExample {
 @Component({
   selector: 'app-typescript-demo',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    NzCardModule,
-    NzTabsModule,
-    NzCodeEditorModule,
-    NzButtonModule,
-    NzAlertModule,
-    NzDividerModule,
-    NzTagModule,
-    NzIconModule
-  ],
-  templateUrl: './typescript-demo.component.html',
-  // styleUrls: ['./typescript-demo.component.css']
+  imports: [CommonModule],
+  template: `
+    <div class="container">
+      <header class="page-header">
+        <h1>💻 TypeScript 数据类型演示</h1>
+        <p class="description">
+          本页面展示了 TypeScript 中的各种数据类型，包括基本类型、复合类型和高级类型。
+          每个示例都可以实时运行并查看结果。
+        </p>
+      </header>
+
+      <div class="tabs">
+        <button 
+          *ngFor="let example of dataTypes; let i = index"
+          class="tab-button"
+          [class.active]="activeTabIndex === i"
+          (click)="selectTab(i)">
+          {{example.type}}
+        </button>
+      </div>
+
+      <div class="tab-content" *ngIf="selectedExample">
+        <div class="example-container">
+          <div class="example-header">
+            <h2>{{selectedExample.type}}</h2>
+            <p class="example-description">{{selectedExample.description}}</p>
+          </div>
+
+          <div class="code-section">
+            <div class="code-toolbar">
+              <div class="code-label">
+                <span class="icon">💻</span> 示例代码
+              </div>
+              <div class="code-actions">
+                <button class="btn btn-small btn-secondary" (click)="copyCode(selectedExample.code)">
+                  📋 复制
+                </button>
+                <button class="btn btn-small btn-primary" (click)="runExample(selectedExample)">
+                  ▶️ 运行
+                </button>
+              </div>
+            </div>
+            
+            <pre class="code-block"><code>{{selectedExample.code}}</code></pre>
+          </div>
+
+          <div class="output-section" *ngIf="selectedExample.output">
+            <div class="output-header">
+              <div class="output-label">
+                <span class="icon">🖥️</span> 输出结果
+              </div>
+            </div>
+            <pre class="output-block">{{selectedExample.output}}</pre>
+          </div>
+
+          <div class="no-output" *ngIf="!selectedExample.output">
+            <div class="no-data">
+              <div class="no-data-icon">🎯</div>
+              <p>点击"运行"按钮查看输出结果</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 使用提示 -->
+      <div class="card tips-card">
+        <h3>💡 使用提示</h3>
+        <ul class="tips-list">
+          <li>TypeScript 是 JavaScript 的超集，添加了类型系统和其他特性</li>
+          <li>使用类型注解可以提高代码的可维护性和可读性</li>
+          <li>TypeScript 的类型系统在编译时进行检查，运行时会被擦除</li>
+          <li>合理使用 any 类型，尽量使用更具体的类型</li>
+          <li>善用联合类型和交叉类型来构建复杂的类型结构</li>
+        </ul>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      color: #333;
+      margin: 0 0 15px 0;
+    }
+
+    .description {
+      font-size: 1.1rem;
+      color: #666;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 2px solid #e1e5e9;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+    }
+
+    .tab-button {
+      background: #f8f9fa;
+      border: 1px solid #e1e5e9;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #666;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .tab-button:hover {
+      color: #007bff;
+      background: #e3f2fd;
+      border-color: #007bff;
+    }
+
+    .tab-button.active {
+      color: white;
+      background: #007bff;
+      border-color: #007bff;
+      font-weight: 600;
+    }
+
+    .tab-content {
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .example-container {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border: 1px solid #e1e5e9;
+      margin-bottom: 30px;
+    }
+
+    .example-header {
+      margin-bottom: 25px;
+    }
+
+    .example-header h2 {
+      font-size: 1.8rem;
+      color: #333;
+      margin: 0 0 10px 0;
+    }
+
+    .example-description {
+      font-size: 1rem;
+      color: #666;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .code-section {
+      margin-bottom: 25px;
+    }
+
+    .code-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8f9fa;
+      padding: 12px 16px;
+      border-radius: 6px 6px 0 0;
+      border: 1px solid #e9ecef;
+      border-bottom: none;
+    }
+
+    .code-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .icon {
+      font-size: 1.1rem;
+    }
+
+    .code-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-small {
+      padding: 4px 8px;
+      font-size: 0.8rem;
+    }
+
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #545b62;
+    }
+
+    .code-block {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      padding: 20px;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      overflow-x: auto;
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .output-section {
+      margin-top: 20px;
+    }
+
+    .output-header {
+      background: #e8f5e8;
+      padding: 12px 16px;
+      border-radius: 6px 6px 0 0;
+      border: 1px solid #c3e6c3;
+      border-bottom: none;
+    }
+
+    .output-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .output-block {
+      background: #f8fffe;
+      border: 1px solid #c3e6c3;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      padding: 20px;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #28a745;
+      overflow-x: auto;
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      min-height: 60px;
+    }
+
+    .no-output {
+      margin-top: 20px;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      padding: 40px;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #999;
+    }
+
+    .no-data-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border: 1px solid #e1e5e9;
+    }
+
+    .tips-card {
+      background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%);
+      border: 1px solid #91d5ff;
+    }
+
+    .tips-card h3 {
+      margin: 0 0 20px 0;
+      color: #333;
+      font-size: 1.3rem;
+    }
+
+    .tips-list {
+      margin: 0;
+      padding-left: 25px;
+      color: #666;
+    }
+
+    .tips-list li {
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .page-header h1 {
+        font-size: 2rem;
+      }
+      
+      .example-container {
+        padding: 20px;
+      }
+      
+      .code-toolbar {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      
+      .code-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      
+      .tabs {
+        justify-content: center;
+      }
+      
+      .tab-button {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+      }
+    }
+  `]
 })
 export class TypescriptDemoComponent implements OnInit {
+  activeTabIndex = 0;
+  selectedExample: DataTypeExample | null = null;
+
   dataTypes: DataTypeExample[] = [
     {
       type: 'Boolean 布尔类型',
@@ -243,12 +600,15 @@ printId(456);`,
     }
   ];
 
-  currentExample: DataTypeExample | null = null;
-  executionResult: string = '';
-
   ngOnInit(): void {
+    this.selectedExample = this.dataTypes[0];
     // 初始化时执行所有示例
     this.executeAllExamples();
+  }
+
+  selectTab(index: number): void {
+    this.activeTabIndex = index;
+    this.selectedExample = this.dataTypes[index];
   }
 
   executeAllExamples(): void {
@@ -284,14 +644,15 @@ printId(456);`,
   }
 
   runExample(example: DataTypeExample): void {
-    this.currentExample = example;
     this.executeCode(example);
-    this.executionResult = example.output;
   }
 
   copyCode(code: string): void {
     navigator.clipboard.writeText(code).then(() => {
       // 可以添加复制成功的提示
+      console.log('代码已复制到剪贴板');
+    }).catch(err => {
+      console.error('复制失败:', err);
     });
   }
 }

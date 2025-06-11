@@ -40,10 +40,21 @@ export const routes: Routes = [
         title: '模块化编程-矩形类 - Angular作业管理系统'
       },
       {
+        path: 'flexbox-layout-demo',
+        loadComponent: () => import('./pages/assignments/flexbox-layout-demo/flexbox_layout.component').then(m => m.FlexboxLayoutDemoComponent),
+        title: 'flexbox - Angular作业管理系统'
+      },
+      {
+        path: 'ng-command',
+        loadComponent: () => import('./pages/assignments/ng-command/ng-command.component').then(m => m.DirectivesDemoComponent),
+        title: '表单 - Angular作业管理系统'
+      },
+      {
         path: 'cylinder-calculator',
         loadComponent: () => import('./pages/assignments/cylinder-calculator/cylinder-calculator.component').then(m => m.CylinderCalculatorComponent),
         title: '圆柱体计算器 - Angular作业管理系统'
       }
+      
       // 其他路由暂时注释掉，直到对应组件创建完成
       /*
       {
@@ -51,15 +62,15 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/assignments/component-communication/component-communication.component').then(m => m.ComponentCommunicationComponent),
         title: '组件通信演示 - Angular作业管理系统'
       },
-      // ... 其他待实现的路由
+      // ... 其他待实现的路由 DirectivesDemoComponent
       */
     ]
   },
-  // {
-  //   path: 'settings',
-  //   loadComponent: () => import('./pages/system-settings/system-settings.component').then(m => m.SystemSettingsComponent),
-  //   title: '系统设置 - Angular作业管理系统'
-  // },
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/system-settings/system-settings.component').then(m => m.SystemSettingsComponent),
+    title: '系统设置 - Angular作业管理系统'
+  },
   {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent),

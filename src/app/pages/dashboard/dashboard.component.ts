@@ -107,9 +107,9 @@ export class DashboardComponent implements OnInit {
       id: 9,
       title: '指令使用',
       description: '展示Angular内置指令和自定义指令的使用方法。',
-      tags: ['指令', '待完成'],
-      status: 'pending',
-      route: '/assignments/directives'
+      tags: ['模块化', 'TypeScript'],
+      status: 'completed',
+      route: '/assignments/ng-command'
     },
     {
       id: 10,
@@ -118,7 +118,16 @@ export class DashboardComponent implements OnInit {
       tags: ['管道', '数据转换', '待完成'],
       status: 'pending',
       route: '/assignments/pipes'
-    }
+    },
+    {
+      id: 11,
+      title: 'CSS Flexbox布局演示',
+      description: '演示CSS Flexbox的各种布局方式，包括水平布局、混合水平布局和混合垂直布局。',
+      tags: ['CSS', 'Flexbox', '布局'],
+      status: 'completed',
+      route: '/assignments/flexbox-layout-demo'
+    },
+    
   ];
 
   stats = {
