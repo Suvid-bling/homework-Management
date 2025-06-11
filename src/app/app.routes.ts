@@ -42,7 +42,12 @@ export const routes: Routes = [
       {
         path: 'component-communication',
         loadComponent: () => import('./pages/assignments/component-communication/component_communication').then(m => m.ComponentCommunicationComponent),
-        title: '模块化编程-矩形类 - Angular作业管理系统'
+        title: '模块化编程-子类父类 - Angular作业管理系统'
+      },
+      {
+        path: 'service_di',
+        loadComponent: () => import('./pages/assignments/service_di/service_di.component').then(m => m.ServiceDiComponent),
+        title: '模块化编程-服务与注入 - Angular作业管理系统'
       },
       {
         path: 'flexbox-layout-demo',
@@ -58,6 +63,21 @@ export const routes: Routes = [
         path: 'cylinder-calculator',
         loadComponent: () => import('./pages/assignments/cylinder-calculator/cylinder-calculator.component').then(m => m.CylinderCalculatorComponent),
         title: '圆柱体计算器 - Angular作业管理系统'
+      },
+            {
+        path: 'ts-canvas',
+        loadComponent: () => import('./pages/assignments/ts-canvas/ts_canvas.component').then(m => m.TsCanvasComponent),
+        title: 'TypeScript Canvas - Angular作业管理系统'
+      },
+      {
+        path: 'routing-demo',
+        loadComponent: () => import('./pages/assignments/routing-demo/routing-demo.component').then(m => m.RoutingDemoComponent),
+        title: '路由与导航演示 - Angular作业管理系统'
+      },
+            {
+        path: 'pipes-demo',
+        loadComponent: () => import('./pages/assignments/pipes-demo/pipes-demo.component').then(m => m.PipesDemoComponent),
+        title: '路由与导航演示 - Angular作业管理系统'
       }
       
       // 其他路由暂时注释掉，直到对应组件创建完成

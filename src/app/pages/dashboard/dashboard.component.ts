@@ -76,16 +76,16 @@ export class DashboardComponent implements OnInit {
       title: '服务与依赖注入',
       description: '演示Angular服务的创建和使用，以及依赖注入的实现方式和最佳实践。',
       tags: ['服务', '依赖注入', '待完成'],
-      status: 'pending',
-      route: '/assignments/service-di'
+      status: 'completed',
+      route: '/assignments/service_di'
     },
     {
       id: 6,
       title: '路由与导航',
       description: '实现单页应用的路由配置和导航功能，包括嵌套路由、路由守卫等高级特性。',
-      tags: ['路由', '导航', '待完成'],
-      status: 'pending',
-      route: '/assignments/routing'
+      tags: ['路由', '导航'],
+      status: 'completed',
+      route: '/assignments/routing-demo'
     },
     {
       id: 7,
@@ -115,9 +115,9 @@ export class DashboardComponent implements OnInit {
       id: 10,
       title: '管道应用',
       description: '演示Angular管道的使用，包括内置管道和自定义管道。',
-      tags: ['管道', '数据转换', '待完成'],
-      status: 'pending',
-      route: '/assignments/pipes'
+      tags: ['管道', '数据转换',],
+      status: 'completed',
+      route: '/assignments/pipes-demo'
     },
     {
       id: 11,
@@ -126,6 +126,14 @@ export class DashboardComponent implements OnInit {
       tags: ['CSS', 'Flexbox', '布局'],
       status: 'completed',
       route: '/assignments/flexbox-layout-demo'
+    },
+        {
+      id: 12,
+      title: 'TS画板',
+      description: '演示Angular服务的创建和使用，以及依赖注入的实现方式和最佳实践。',
+      tags: ['服务', '依赖注入', '待完成'],
+      status: 'completed',
+      route: '/assignments/ts-canvas'
     },
     
   ];

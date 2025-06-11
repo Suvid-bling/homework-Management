@@ -51,9 +51,9 @@ export class AppComponent {
       selected: false
     },
     {
-      title: '平时作业',
+      title: 'TS在线',
       icon: 'file-text',
-      link: '/assignments',
+      link: '/assignments/ts-canvas',
       selected: false
     },
     {

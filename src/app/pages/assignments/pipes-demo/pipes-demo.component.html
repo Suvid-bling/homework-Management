@@ -1,0 +1,682 @@
+   <div class="pipes-demo-container">
+      <!-- Header -->
+      <header class="page-header">
+        <h1 class="page-title">
+          <span class="title-icon">🔧</span>
+          Angular 管道应用演示
+        </h1>
+        <p class="page-description">
+          全面演示Angular管道的使用，包括内置管道、自定义管道、管道链式调用、异步管道等高级特性和实际应用场景。
+        </p>
+      </header>
+
+      <!-- Navigation Tabs -->
+      <div class="tabs-container">
+        <div class="tabs-header">
+          <button 
+            *ngFor="let tab of tabs" 
+            class="tab-button"
+            [class.active]="activeTab === tab.id"
+            (click)="setActiveTab(tab.id)">
+            <span class="tab-icon">{{ tab.icon }}</span>
+            {{ tab.title }}
+          </button>
+          <div class="tab-extra">
+            <span class="pipes-count">
+              演示管道: {{ getTotalPipesCount() }} 个
+            </span>
+          </div>
+        </div>
+
+        <div class="tabs-content">
+          
+          <!-- Built-in Pipes Tab -->
+          <div class="tab-pane" [class.active]="activeTab === 'builtin'" id="builtin">
+            <div class="content-grid">
+              
+              <!-- Text Transformation Pipes -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">文本转换管道</h3>
+                  <div class="pipe-category">内置</div>
+                </div>
+                <div class="card-content">
+                  <div class="interactive-demo">
+                    <div class="demo-input">
+                      <label class="form-label">输入文本:</label>
+                      <input 
+                        type="text" 
+                        class="form-input"
+                        [(ngModel)]="demoText"
+                        placeholder="请输入一些文本...">
+                    </div>
+                    
+                    <div class="pipes-grid">
+                      <div class="pipe-demo-item">
+                        <h5>UpperCase 管道</h5>
+                        <div class="pipe-result">{{ demoText | uppercase }}</div>
+                        <code class="pipe-code">{{ demoText }} | uppercase</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>LowerCase 管道</h5>
+                        <div class="pipe-result">{{ demoText | lowercase }}</div>
+                        <code class="pipe-code">{{ demoText }} | lowercase</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>TitleCase 管道</h5>
+                        <div class="pipe-result">{{ demoText | titlecase }}</div>
+                        <code class="pipe-code">{{ demoText }} | titlecase</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>Slice 管道</h5>
+                        <div class="slice-controls">
+                          <input type="number" [(ngModel)]="sliceStart" placeholder="起始" class="mini-input">
+                          <input type="number" [(ngModel)]="sliceEnd" placeholder="结束" class="mini-input">
+                        </div>
+                        <div class="pipe-result">{{ demoText | slice:sliceStart:sliceEnd }}</div>
+                        <code class="pipe-code">{{ demoText }} | slice:{{sliceStart}}:{{sliceEnd}}</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Number and Currency Pipes -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">数字与货币管道</h3>
+                  <div class="pipe-category">内置</div>
+                </div>
+                <div class="card-content">
+                  <div class="interactive-demo">
+                    <div class="demo-input">
+                      <label class="form-label">输入数字:</label>
+                      <input 
+                        type="number" 
+                        class="form-input"
+                        [(ngModel)]="demoNumber"
+                        placeholder="请输入数字...">
+                    </div>
+                    
+                    <div class="pipes-grid">
+                      <div class="pipe-demo-item">
+                        <h5>Decimal 管道</h5>
+                        <div class="pipe-result">{{ demoNumber | number:'1.2-2' }}</div>
+                        <code class="pipe-code">{{ demoNumber }} | number:'1.2-2'</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>Currency 管道 (CNY)</h5>
+                        <div class="pipe-result">{{ demoNumber | currency:'CNY':'symbol':'1.2-2':'zh-CN' }}</div>
+                        <code class="pipe-code">{{ demoNumber }} | currency:'CNY'</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>Currency 管道 (USD)</h5>
+                        <div class="pipe-result">{{ demoNumber | currency:'USD':'symbol':'1.2-2':'en-US' }}</div>
+                        <code class="pipe-code">{{ demoNumber }} | currency:'USD'</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>Percent 管道</h5>
+                        <div class="pipe-result">{{ (demoNumber / 100) | percent:'1.2-2' }}</div>
+                        <code class="pipe-code">{{ demoNumber / 100 }} | percent</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Date Pipes -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">日期时间管道</h3>
+                  <div class="pipe-category">内置</div>
+                </div>
+                <div class="card-content">
+                  <div class="interactive-demo">
+                    <div class="demo-input">
+                      <label class="form-label">选择日期:</label>
+                      <input 
+                        type="datetime-local" 
+                        class="form-input"
+                        [(ngModel)]="demoDate">
+                    </div>
+                    
+                    <div class="pipes-grid">
+                      <div class="pipe-demo-item">
+                        <h5>短日期格式</h5>
+                        <div class="pipe-result">{{ demoDate | date:'short' }}</div>
+                        <code class="pipe-code">{{ "demoDate" }} | date:'short'</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>中等日期格式</h5>
+                        <div class="pipe-result">{{ demoDate | date:'medium' }}</div>
+                        <code class="pipe-code">{{ "demoDate" }} | date:'medium'</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>完整日期格式</h5>
+                        <div class="pipe-result">{{ demoDate | date:'full' }}</div>
+                        <code class="pipe-code">{{ "demoDate" }} | date:'full'</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>自定义格式</h5>
+                        <div class="pipe-result">{{ demoDate | date:'yyyy年MM月dd日 HH:mm:ss' }}</div>
+                        <code class="pipe-code">{{ "demoDate" }} | date:'yyyy年MM月dd日 HH:mm:ss'</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Pipes Tab -->
+          <div class="tab-pane" [class.active]="activeTab === 'custom'" id="custom">
+            <div class="content-grid">
+              
+              <!-- Custom Text Pipes -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">自定义文本管道</h3>
+                  <div class="pipe-category">自定义</div>
+                </div>
+                <div class="card-content">
+                  <div class="interactive-demo">
+                    <div class="demo-controls">
+                      <div class="control-group">
+                        <label class="form-label">文本内容:</label>
+                        <input 
+                          type="text" 
+                          class="form-input"
+                          [(ngModel)]="highlightText"
+                          placeholder="请输入要搜索的文本...">
+                      </div>
+                      <div class="control-group">
+                        <label class="form-label">高亮关键词:</label>
+                        <input 
+                          type="text" 
+                          class="form-input"
+                          [(ngModel)]="searchKeyword"
+                          placeholder="请输入关键词...">
+                      </div>
+                    </div>
+                    
+                    <div class="pipe-demo-item full-width">
+                      <h5>Highlight 管道 (高亮搜索)</h5>
+                      <div class="pipe-result" [innerHTML]="highlightText | highlight:searchKeyword"></div>
+                      <code class="pipe-code">{{ highlightText }} | highlight:'{{ searchKeyword }}'</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- File Size Pipe -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">文件大小管道</h3>
+                  <div class="pipe-category">自定义</div>
+                </div>
+                <div class="card-content">
+                  <div class="interactive-demo">
+                    <div class="demo-input">
+                      <label class="form-label">文件大小 (字节):</label>
+                      <input 
+                        type="number" 
+                        class="form-input"
+                        [(ngModel)]="fileSizeBytes"
+                        placeholder="请输入字节数...">
+                    </div>
+                    
+                    <div class="file-size-examples">
+                      <div class="size-example" *ngFor="let example of fileSizeExamples" (click)="fileSizeBytes = example.bytes">
+                        <span class="example-label">{{ example.label }}</span>
+                        <span class="example-size">{{ example.bytes | fileSize }}</span>
+                      </div>
+                    </div>
+                    
+                    <div class="pipe-demo-item">
+                      <h5>FileSize 管道</h5>
+                      <div class="pipe-result">{{ fileSizeBytes | fileSize }}</div>
+                      <code class="pipe-code">{{ fileSizeBytes }} | fileSize</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Temperature Conversion Pipe -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">温度转换管道</h3>
+                  <div class="pipe-category">自定义</div>
+                </div>
+                <div class="card-content">
+                  <div class="interactive-demo">
+                    <div class="temp-controls">
+                      <div class="control-group">
+                        <label class="form-label">温度值:</label>
+                        <input 
+                          type="number" 
+                          class="form-input"
+                          [(ngModel)]="temperatureValue"
+                          placeholder="请输入温度...">
+                      </div>
+                      <div class="control-group">
+                        <label class="form-label">原始单位:</label>
+                        <select class="form-select" [(ngModel)]="fromTempUnit">
+                          <option value="C">摄氏度 (°C)</option>
+                          <option value="F">华氏度 (°F)</option>
+                          <option value="K">开尔文 (K)</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <div class="temp-conversions">
+                      <div class="pipe-demo-item">
+                        <h5>转换为摄氏度</h5>
+                        <div class="pipe-result">{{ temperatureValue | temperature:fromTempUnit:'C' }}</div>
+                        <code class="pipe-code">{{ temperatureValue }} | temperature:'{{fromTempUnit}}':'C'</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>转换为华氏度</h5>
+                        <div class="pipe-result">{{ temperatureValue | temperature:fromTempUnit:'F' }}</div>
+                        <code class="pipe-code">{{ temperatureValue }} | temperature:'{{fromTempUnit}}':'F'</code>
+                      </div>
+                      
+                      <div class="pipe-demo-item">
+                        <h5>转换为开尔文</h5>
+                        <div class="pipe-result">{{ temperatureValue | temperature:fromTempUnit:'K' }}</div>
+                        <code class="pipe-code">{{ temperatureValue }} | temperature:'{{fromTempUnit}}':'K'</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Time Ago Pipe -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">相对时间管道</h3>
+                  <div class="pipe-category">自定义</div>
+                </div>
+                <div class="card-content">
+                  <div class="time-ago-examples">
+                    <div class="pipe-demo-item" *ngFor="let timeExample of timeAgoExamples">
+                      <h5>{{ timeExample.label }}</h5>
+                      <div class="pipe-result">{{ timeExample.date | timeAgo }}</div>
+                      <code class="pipe-code">{{ timeExample.date.toISOString() }} | timeAgo</code>
+                      <small class="time-actual">实际时间: {{ timeExample.date | date:'medium' }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Async Pipes Tab -->
+          <div class="tab-pane" [class.active]="activeTab === 'async'" id="async">
+            <div class="content-grid">
+              
+              <!-- Observable Timer -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">异步管道演示</h3>
+                  <div class="pipe-category">内置</div>
+                </div>
+                <div class="card-content">
+                  <div class="async-demos">
+                    <div class="pipe-demo-item">
+                      <h5>Observable 计时器</h5>
+                      <div class="pipe-result timer">{{ timer$ | async }}</div>
+                      <code class="pipe-code">timer$ | async</code>
+                      <p class="demo-description">每秒更新的Observable数据流</p>
+                    </div>
+                    
+                    <div class="pipe-demo-item">
+                      <h5>Promise 数据</h5>
+                      <div class="pipe-result">{{ userPromise | async | json }}</div>
+                      <code class="pipe-code">userPromise | async | json</code>
+                      <p class="demo-description">异步Promise数据，3秒后加载</p>
+                    </div>
+                    
+                    <div class="pipe-demo-item">
+                      <h5>实时时钟</h5>
+                      <div class="pipe-result clock">{{ currentTime$ | async | date:'HH:mm:ss' }}</div>
+                      <code class="pipe-code">currentTime$ | async | date:'HH:mm:ss'</code>
+                      <p class="demo-description">实时更新的时钟显示</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- HTTP Simulation -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">模拟HTTP请求</h3>
+                  <div class="pipe-category">异步</div>
+                </div>
+                <div class="card-content">
+                  <div class="http-demo">
+                    <div class="demo-controls">
+                      <button class="btn btn-primary" (click)="loadUsers()" [disabled]="isLoading">
+                        <span *ngIf="isLoading" class="loading-spinner"></span>
+                        {{ isLoading ? '加载中...' : '加载用户数据' }}
+                      </button>
+                      <button class="btn btn-secondary" (click)="clearUsers()">
+                        清空数据
+                      </button>
+                    </div>
+                    
+                    <div class="users-container" *ngIf="users$ | async as users">
+                      <div class="user-card" *ngFor="let user of users">
+                        <div class="user-avatar">{{ user.name | slice:0:1 | uppercase }}</div>
+                        <div class="user-info">
+                          <h4>{{ user.name | titlecase }}</h4>
+                          <p>{{ user.email | lowercase }}</p>
+                          <div class="user-details">
+                            <span class="detail-item">
+                              <strong>年龄:</strong> {{ user.age }}
+                            </span>
+                            <span class="detail-item">
+                              <strong>薪资:</strong> {{ user.salary | currency:'CNY':'symbol':'1.0-0' }}
+                            </span>
+                            <span class="detail-item">
+                              <strong>入职:</strong> {{ user.joinDate | date:'shortDate' }}
+                            </span>
+                            <span class="detail-item">
+                              <strong>最后登录:</strong> {{ user.lastLogin | timeAgo }}
+                            </span>
+                          </div>
+                          <div class="user-skills">
+                            <span class="skill-tag" *ngFor="let skill of user.skills | slice:0:3">
+                              {{ skill }}
+                            </span>
+                            <span *ngIf="user.skills.length > 3" class="more-skills">
+                              +{{ user.skills.length - 3 }} 更多
+                            </span>
+                          </div>
+                          <div class="user-status">
+                            <span class="status-badge" [class.active]="user.isActive">
+                              {{ user.isActive ? '在线' : '离线' }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="empty-state" *ngIf="!isLoading && !(users$ | async)?.length">
+                      <div class="empty-icon">👥</div>
+                      <p>点击"加载用户数据"按钮获取数据</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chaining Tab -->
+          <div class="tab-pane" [class.active]="activeTab === 'chaining'" id="chaining">
+            <div class="content-grid">
+              
+              <!-- Pipe Chaining Examples -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">管道链式调用</h3>
+                  <div class="pipe-category">组合</div>
+                </div>
+                <div class="card-content">
+                  <div class="chaining-demos">
+                    <div class="pipe-demo-item">
+                      <h5>文本 + 日期组合</h5>
+                      <div class="demo-input">
+                        <input 
+                          type="text" 
+                          class="form-input"
+                          [(ngModel)]="chainText"
+                          placeholder="输入文本...">
+                      </div>
+                      <div class="pipe-result">{{ chainText | titlecase | slice:0:10 }}</div>
+                      <code class="pipe-code">{{ chainText }} | titlecase | slice:0:10</code>
+                    </div>
+                    
+                    <div class="pipe-demo-item">
+                      <h5>数字 + 货币组合</h5>
+                      <div class="demo-input">
+                        <input 
+                          type="number" 
+                          class="form-input"
+                          [(ngModel)]="chainNumber"
+                          placeholder="输入数字...">
+                      </div>
+                      <div class="pipe-result">{{ chainNumber | number:'1.2-2' | currency:'CNY':'symbol':'1.2-2':'zh-CN' }}</div>
+                      <code class="pipe-code">{{ chainNumber }} | number:'1.2-2' | currency:'CNY'</code>
+                    </div>
+                    
+                    <div class="pipe-demo-item">
+                      <h5>复杂链式调用</h5>
+                      <div class="pipe-result">
+                        {{ complexData | json | slice:0:100 | lowercase }}
+                      </div>
+                      <code class="pipe-code">complexData | json | slice:0:100 | lowercase</code>
+                    </div>
+                    
+                    <div class="pipe-demo-item">
+                      <h5>异步 + 文本处理</h5>
+                      <div class="pipe-result">
+                        {{ asyncMessage$ | async | uppercase | slice:0:20 }}
+                      </div>
+                      <code class="pipe-code">asyncMessage$ | async | uppercase | slice:0:20</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Performance Considerations -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">性能考虑</h3>
+                  <div class="pipe-category">优化</div>
+                </div>
+                <div class="card-content">
+                  <div class="performance-tips">
+                    <div class="tip-item">
+                      <div class="tip-icon">⚡</div>
+                      <div class="tip-content">
+                        <h5>纯管道优化</h5>
+                        <p>使用纯管道(pure: true)可以提高性能，Angular只在输入值变化时重新计算</p>
+                        <code></code>
+                      </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                      <div class="tip-icon">🔄</div>
+                      <div class="tip-content">
+                        <h5>异步管道自动订阅</h5>
+                        <p>AsyncPipe自动处理Observable的订阅和取消订阅，避免内存泄漏</p>
+                        <code>{{ "{{" }} data$ | async {{ "}}" }}</code>
+                      </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                      <div class="tip-icon">🎯</div>
+                      <div class="tip-content">
+                        <h5>避免复杂计算</h5>
+                        <p>在管道中避免复杂的计算或DOM操作，保持管道的简单和高效</p>
+                        <code>简单转换 > 复杂逻辑</code>
+                      </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                      <div class="tip-icon">📊</div>
+                      <div class="tip-content">
+                        <h5>合理使用链式调用</h5>
+                        <p>过长的管道链可能影响可读性和性能，考虑在组件中预处理数据</p>
+                        <code>最多3-4个管道链接</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Examples Tab -->
+          <div class="tab-pane" [class.active]="activeTab === 'examples'" id="examples">
+            <div class="content-grid">
+              
+              <!-- Real-world Examples -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">实际应用场景</h3>
+                  <div class="pipe-category">实例</div>
+                </div>
+                <div class="card-content">
+                  <div class="examples-list">
+                    <div class="example-item" *ngFor="let example of realWorldExamples">
+                      <div class="example-header">
+                        <h5>{{ example.title }}</h5>
+                        <span class="example-category">{{ example.category }}</span>
+                      </div>
+                      <p class="example-description">{{ example.description }}</p>
+                      <div class="example-demo">
+                        <div class="demo-input" *ngIf="example.hasInput">
+                          <label>{{ example.inputLabel }}:</label>
+                          <input 
+                            [type]="example.inputType" 
+                            class="form-input mini"
+                            [(ngModel)]="example.inputValue"
+                            [placeholder]="example.inputPlaceholder">
+                        </div>
+                        <div class="demo-result">
+                          <strong>结果:</strong>
+                          <span [innerHTML]="getExampleResult(example)"></span>
+                        </div>
+                        <div class="demo-code">
+                          <code>{{ example.code }}</code>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Custom Pipe Creation Guide -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">自定义管道创建指南</h3>
+                  <div class="pipe-category">教程</div>
+                </div>
+                <div class="card-content">
+                  <div class="guide-steps">
+                    <div class="step-item">
+                      <div class="step-number">1</div>
+                      <div class="step-content">
+                        <h5>创建管道类</h5>
+                        <div class="code-block">
+                          <pre><code>
+export class MyCustomPipe implements PipeTransform {{ "{" }}
+  transform(value: any, ...args: any[]): any {{ "{" }}
+    // 转换逻辑
+    return transformedValue;
+  {{ "}" }}
+{{ "}" }}</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="step-item">
+                      <div class="step-number">2</div>
+                      <div class="step-content">
+                        <h5>导入管道</h5>
+                        <div class="code-block">
+                          <pre><code>
+export class MyComponent {{ "{" }} {{ "}" }}</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="step-item">
+                      <div class="step-number">3</div>
+                      <div class="step-content">
+                        <h5>在模板中使用</h5>
+                        <div class="code-block">
+                          <pre><code>{{ "{{" }} data | myCustomPipe:param1:param2 {{ "}}" }}</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pipe Testing -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">管道测试</h3>
+                  <div class="pipe-category">测试</div>
+                </div>
+                <div class="card-content">
+                  <div class="test-examples">
+                    <h5>单元测试示例</h5>
+                    <div class="code-block">
+                      <pre><code>describe('FileSizePipe', () => {{ "{" }}
+  let pipe: FileSizePipe;
+
+  beforeEach(() => {{ "{" }}
+    pipe = new FileSizePipe();
+  {{ "}" }});
+
+  it('should convert bytes to readable format', () => {{ "{" }}
+    expect(pipe.transform(1024)).toBe('1 KB');
+    expect(pipe.transform(1048576)).toBe('1 MB');
+    expect(pipe.transform(0)).toBe('0 Bytes');
+  {{ "}" }});
+{{ "}" }});</code></pre>
+                    </div>
+                    
+                    <h5>集成测试示例</h5>
+                    <div class="code-block">
+                      <pre><code>
+class TestComponent {{ "{" }} {{ "}" }}
+
+describe('FileSizePipe Integration', () => {{ "{" }}
+  let fixture: ComponentFixture&lt;TestComponent&gt;;
+  
+  beforeEach(() => {{ "{" }}
+    TestBed.configureTestingModule({{ "{" }}
+      declarations: [TestComponent],
+      imports: [FileSizePipe]
+    {{ "}" }});
+    
+    fixture = TestBed.createComponent(TestComponent);
+  {{ "}" }});
+
+  it('should display formatted file size', () => {{ "{" }}
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toBe('1 KB');
+  {{ "}" }});
+{{ "}" }});</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toast Messages -->
+      <div class="toast-container" [class.show]="showToast">
+        <div class="toast" [class]="'toast-' + toastType">
+          <span class="toast-icon">{{ getToastIcon() }}</span>
+          <span class="toast-message">{{ toastMessage }}</span>
+          <button class="toast-close" (click)="hideToast()">×</button>
+        </div>
+      </div>
+    </div>
