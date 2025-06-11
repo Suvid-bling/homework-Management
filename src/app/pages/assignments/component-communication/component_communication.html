@@ -1,0 +1,123 @@
+<!-- src/app/pages/assignments/component-communication/component-communication.component.html -->
+<div class="assignment-container">
+  <!-- 作业标题 -->
+  <div class="header-card">
+    <div class="assignment-header">
+      <h1>
+        🏢 Assignment 4: 组件通信演示
+      </h1>
+      <p class="assignment-description">
+        展示Angular组件间的通信方式，包括父子组件通信、兄弟组件通信、服务通信等模式。
+        学习如何在不同组件之间传递数据和状态。
+      </p>
+    </div>
+  </div>
+
+  <!-- 通信统计 -->
+  <div class="stats-card">
+    <h3>📊 通信统计</h3>
+    <div class="stats-grid">
+      <div class="stat-item stat-success">
+        <div class="stat-value">{{ parentChildCommunications }}</div>
+        <div class="stat-label">父子通信次数</div>
+      </div>
+      <div class="stat-item stat-primary">
+        <div class="stat-value">{{ siblingCommunications }}</div>
+        <div class="stat-label">兄弟通信次数</div>
+      </div>
+      <div class="stat-item stat-warning">
+        <div class="stat-value">{{ serviceCommunications }}</div>
+        <div class="stat-label">服务通信次数</div>
+      </div>
+      <div class="stat-item stat-purple">
+        <div class="stat-value">{{ totalCommunications }}</div>
+        <div class="stat-label">总通信次数</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 标签页导航 -->
+  <div class="tabs-container">
+    <div class="tab-nav">
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'parent-child'"
+        (click)="switchTab('parent-child')">
+        👨‍👦 父子组件通信
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'sibling'"
+        (click)="switchTab('sibling')">
+        👬 兄弟组件通信
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'theory'"
+        (click)="switchTab('theory')">
+        📖 通信原理
+      </button>
+    </div>
+
+    <!-- 父子组件通信标签页 -->
+    <div class="tab-content" *ngIf="activeTab === 'parent-child'">
+      <!-- 父组件 -->
+      <div class="parent-card">
+        <div class="card-header">
+          <h3>父组件</h3>
+          <span class="badge badge-purple">Parent</span>
+        </div>
+
+        <div class="card-body">
+          <div class="parent-data-section">
+            <h4>📤 父组件数据:</h4>
+            <div class="data-controls">
+              <div class="data-item">
+                <label class="data-label">消息:</label>
+                <input 
+                  type="text"
+                  [(ngModel)]="parentMessage" 
+                  placeholder="输入传递给子组件的消息"
+                  class="input-field">
+              </div>
+              <div class="data-item">
+                <label class="data-label">计数器:</label>
+                <div class="counter-control">
+                  <span class="counter-display">{{ parentCounter }}</span>
+                  <button class="btn btn-primary btn-small" (click)="incrementParentCounter()">
+                    ➕
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="received-from-child" *ngIf="messageFromChild || childActions.length > 0">
+            <h4>📨 从子组件接收:</h4>
+            <div class="received-message" *ngIf="messageFromChild">
+              <strong>子组件消息:</strong> {{ messageFromChild }}
+            </div>
+            <div class="received-actions" *ngIf="childActions.length > 0">
+              <strong>子组件请求:</strong>
+              <span 
+                *ngFor="let action of childActions" 
+                class="action-tag"
+                [class]="'tag-' + getActionColor(action)">
+                {{ action }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 子组件 -->
+      <app-child-component
+        [parentMessage]="parentMessage"
+        [parentCounter]="parentCounter"
+        (messageToParent)="receiveFromChild($event)"
+        (incrementRequest)="handleIncrementRequest()"
+        (resetRequest)="handleResetRequest()">
+      </app-child-component>
+    </div>
+
+    

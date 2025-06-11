@@ -3,16 +3,16 @@
     <!-- 左侧个人信息卡片 -->
     <div nz-col [nzSpan]="8" [nzXs]="24" [nzSm]="24" [nzMd]="8">
       <nz-card class="profile-card">
-        <div class="avatar-section">
-          <nz-avatar 
-            [nzSize]="120" 
-            nzIcon="user"
-            [nzText]="personalInfo.name[0]"
-            class="profile-avatar">
-          </nz-avatar>
-          <h2 class="profile-name">{{ personalInfo.name }}</h2>
-          <p class="profile-motto">{{ personalInfo.motto }}</p>
-        </div>
+    <div class="avatar-section">
+      <nz-avatar 
+        [nzSize]="120" 
+        [nzSrc]="personalInfo.avatar"
+        [nzText]="personalInfo.name[0]"
+        class="profile-avatar">
+      </nz-avatar>
+      <h2 class="profile-name">{{ personalInfo.name }}</h2>
+      <p class="profile-motto">{{ personalInfo.motto }}</p>
+    </div>
         
         <nz-descriptions [nzColumn]="1" nzSize="small" class="info-descriptions">
           <nz-descriptions-item nzTitle="性别">{{ personalInfo.gender }}</nz-descriptions-item>

@@ -40,6 +40,11 @@ export const routes: Routes = [
         title: '模块化编程-矩形类 - Angular作业管理系统'
       },
       {
+        path: 'component-communication',
+        loadComponent: () => import('./pages/assignments/component-communication/component_communication').then(m => m.ComponentCommunicationComponent),
+        title: '模块化编程-矩形类 - Angular作业管理系统'
+      },
+      {
         path: 'flexbox-layout-demo',
         loadComponent: () => import('./pages/assignments/flexbox-layout-demo/flexbox_layout.component').then(m => m.FlexboxLayoutDemoComponent),
         title: 'flexbox - Angular作业管理系统'

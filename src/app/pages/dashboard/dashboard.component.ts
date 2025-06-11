@@ -67,8 +67,8 @@ export class DashboardComponent implements OnInit {
       id: 4,
       title: '组件通信演示',
       description: '展示Angular组件间的通信方式，包括父子组件通信、兄弟组件通信等。',
-      tags: ['组件通信', '待完成'],
-      status: 'pending',
+      tags: ['组件', '模块化'],
+      status: 'completed',
       route: '/assignments/component-communication'
     },
     {

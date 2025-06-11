@@ -44,11 +44,12 @@ export class AuthorIntroComponent {
   personalInfo = {
     name: '苏子毅',
     gender: '男',
-    class: '计算机科学与技术2021级',
-    studentId: '202100000000',
+    class: '计科专起本24-1',
+    studentId: '24951060135',
     email: 'suziyi@example.com',
     github: 'github.com/suziyi',
-    motto: '热爱编程，追求卓越'
+    motto: '永不言弃，追求卓越',
+    avatar: '/assets/images/suzy2.jpg' 
   };
 
   hobbies: Hobby[] = [
@@ -69,22 +70,22 @@ export class AuthorIntroComponent {
 
   timeline = [
     {
-      date: '2021年9月',
+      date: '2022年9月',
       event: '进入大学，开始学习计算机科学',
       color: 'green'
     },
     {
-      date: '2022年3月',
+      date: '2023年3月',
       event: '开始学习前端开发，接触Angular框架',
       color: 'blue'
     },
     {
-      date: '2023年6月',
+      date: '2024年6月',
       event: '参加前端开发实习，积累项目经验',
       color: 'orange'
     },
     {
-      date: '2024年12月',
+      date: '2025年6月',
       event: '完成Angular作业管理系统项目',
       color: 'red'
     }
