@@ -33,7 +33,7 @@ interface DataTypeExample {
     NzIconModule
   ],
   templateUrl: './typescript-demo.component.html',
-  styleUrls: ['./typescript-demo.component.css']
+  // styleUrls: ['./typescript-demo.component.css']
 })
 export class TypescriptDemoComponent implements OnInit {
   dataTypes: DataTypeExample[] = [
