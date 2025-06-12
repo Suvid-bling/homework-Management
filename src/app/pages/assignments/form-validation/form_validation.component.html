@@ -1,0 +1,1110 @@
+<!-- form_validation.component.html -->
+<div class="form-validation-container">
+  <!-- 页面标题 -->
+  <div class="page-header">
+    <h1 class="page-title">
+      <span class="title-icon">📝</span>
+      表单验证演示
+    </h1>
+    <p class="page-description">
+      展示Angular表单验证的完整功能，包括响应式表单和模板驱动表单的各种验证方式、
+      自定义验证器、异步验证、条件验证等高级特性。
+    </p>
+  </div>
+
+  <!-- 验证统计卡片 -->
+  <div class="stats-card">
+    <h3>📊 表单验证统计</h3>
+    <div class="stats-grid">
+      <div class="stat-item stat-valid">
+        <div class="stat-value">{{ validationStats.reactive.valid }}</div>
+        <div class="stat-label">有效字段</div>
+      </div>
+      <div class="stat-item stat-invalid">
+        <div class="stat-value">{{ validationStats.reactive.invalid }}</div>
+        <div class="stat-label">无效字段</div>
+      </div>
+      <div class="stat-item stat-pending">
+        <div class="stat-value">{{ validationStats.reactive.pending }}</div>
+        <div class="stat-label">验证中</div>
+      </div>
+      <div class="stat-item stat-completion">
+        <div class="stat-value">{{ getFormCompletionPercentage() }}%</div>
+        <div class="stat-label">完成度</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 标签页导航 -->
+  <div class="tabs-container">
+    <div class="tab-nav">
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'reactive'"
+        (click)="switchTab('reactive')">
+        🎛️ 响应式表单验证
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'template'"
+        (click)="switchTab('template')">
+        📋 模板驱动表单验证
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'theory'"
+        (click)="switchTab('theory')">
+        📚 验证理论与最佳实践
+      </button>
+    </div>
+
+    <!-- 响应式表单标签页 -->
+    <div class="tab-content" *ngIf="activeTab === 'reactive'">
+      <div class="form-container">
+        <!-- 表单进度条 -->
+        <div class="form-progress">
+          <div class="progress-info">
+            <span>表单完成进度: {{ getFormCompletionPercentage() }}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getFormCompletionPercentage()"></div>
+          </div>
+        </div>
+
+        <form [formGroup]="studentForm" (ngSubmit)="onSubmitReactiveForm()" class="reactive-form">
+          <!-- 个人信息部分 -->
+          <div class="form-section">
+            <div class="section-header">
+              <h3>👤 个人信息</h3>
+              <div class="section-status" [class.valid]="studentForm.get('personalInfo')?.valid">
+                {{ studentForm.get('personalInfo')?.valid ? '✅' : '❌' }}
+              </div>
+            </div>
+
+            <div formGroupName="personalInfo" class="form-group-container">
+              <div class="form-grid">
+                <!-- 姓名 -->
+                <div class="form-field">
+                  <label class="field-label required">姓名</label>
+                  <input 
+                    type="text"
+                    formControlName="name"
+                    class="form-input"
+                    [class.error]="hasError('personalInfo.name')"
+                    placeholder="请输入真实姓名">
+                  <div class="field-error" *ngIf="hasError('personalInfo.name')">
+                    {{ getErrorMessage('personalInfo.name') }}
+                  </div>
+                </div>
+
+                <!-- 邮箱 -->
+                <div class="form-field">
+                  <label class="field-label required">邮箱</label>
+                  <div class="input-with-status">
+                    <input 
+                      type="email"
+                      formControlName="email"
+                      class="form-input"
+                      [class.error]="hasError('personalInfo.email')"
+                      [class.pending]="getFormControl('personalInfo.email')?.pending"
+                      placeholder="请输入邮箱地址">
+                    <div class="input-status">
+                      <span *ngIf="getFormControl('personalInfo.email')?.pending" class="status-pending">⏳</span>
+                      <span *ngIf="getFormControl('personalInfo.email')?.valid" class="status-valid">✅</span>
+                      <span *ngIf="hasError('personalInfo.email')" class="status-error">❌</span>
+                    </div>
+                  </div>
+                  <div class="field-error" *ngIf="hasError('personalInfo.email')">
+                    {{ getErrorMessage('personalInfo.email') }}
+                  </div>
+                  <div class="field-hint">邮箱用于登录和接收通知</div>
+                </div>
+
+                <!-- 手机号 -->
+                <div class="form-field">
+                  <label class="field-label required">手机号</label>
+                  <input 
+                    type="tel"
+                    formControlName="phone"
+                    class="form-input"
+                    [class.error]="hasError('personalInfo.phone')"
+                    placeholder="请输入11位手机号码">
+                  <div class="field-error" *ngIf="hasError('personalInfo.phone')">
+                    {{ getErrorMessage('personalInfo.phone') }}
+                  </div>
+                </div>
+
+                <!-- 身份证号 -->
+                <div class="form-field">
+                  <label class="field-label required">身份证号</label>
+                  <input 
+                    type="text"
+                    formControlName="idCard"
+                    class="form-input"
+                    [class.error]="hasError('personalInfo.idCard')"
+                    placeholder="请输入身份证号码">
+                  <div class="field-error" *ngIf="hasError('personalInfo.idCard')">
+                    {{ getErrorMessage('personalInfo.idCard') }}
+                  </div>
+                </div>
+
+                <!-- 年龄 -->
+                <div class="form-field">
+                  <label class="field-label required">年龄</label>
+                  <input 
+                    type="number"
+                    formControlName="age"
+                    class="form-input"
+                    [class.error]="hasError('personalInfo.age')"
+                    placeholder="请输入年龄"
+                    min="16"
+                    max="65">
+                  <div class="field-error" *ngIf="hasError('personalInfo.age')">
+                    {{ getErrorMessage('personalInfo.age') }}
+                  </div>
+                </div>
+
+                <!-- 性别 -->
+                <div class="form-field">
+                  <label class="field-label required">性别</label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" formControlName="gender" value="male">
+                      <span class="radio-text">男</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" formControlName="gender" value="female">
+                      <span class="radio-text">女</span>
+                    </label>
+                  </div>
+                  <div class="field-error" *ngIf="hasError('personalInfo.gender')">
+                    {{ getErrorMessage('personalInfo.gender') }}
+                  </div>
+                </div>
+
+                <!-- 生日 -->
+                <div class="form-field">
+                  <label class="field-label required">生日</label>
+                  <input 
+                    type="date"
+                    formControlName="birthday"
+                    class="form-input"
+                    [class.error]="hasError('personalInfo.birthday')">
+                  <div class="field-error" *ngIf="hasError('personalInfo.birthday')">
+                    {{ getErrorMessage('personalInfo.birthday') }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 账户信息部分 -->
+          <div class="form-section">
+            <div class="section-header">
+              <h3>🔐 账户信息</h3>
+              <div class="section-status" [class.valid]="studentForm.get('accountInfo')?.valid">
+                {{ studentForm.get('accountInfo')?.valid ? '✅' : '❌' }}
+              </div>
+            </div>
+
+            <div formGroupName="accountInfo" class="form-group-container">
+              <div class="form-grid">
+                <!-- 用户名 -->
+                <div class="form-field">
+                  <label class="field-label required">用户名</label>
+                  <input 
+                    type="text"
+                    formControlName="username"
+                    class="form-input"
+                    [class.error]="hasError('accountInfo.username')"
+                    placeholder="3-20个字符，支持字母数字下划线">
+                  <div class="field-error" *ngIf="hasError('accountInfo.username')">
+                    {{ getErrorMessage('accountInfo.username') }}
+                  </div>
+                </div>
+
+                <!-- 密码 -->
+                <div class="form-field">
+                  <label class="field-label required">密码</label>
+                  <input 
+                    type="password"
+                    formControlName="password"
+                    class="form-input"
+                    [class.error]="hasError('accountInfo.password')"
+                    placeholder="请输入密码">
+                  <div class="password-strength" *ngIf="getFormControl('accountInfo.password')?.value">
+                    <div class="strength-bar">
+                      <div class="strength-fill" 
+                           [style.width.%]="getPasswordStrength()"
+                           [style.background-color]="getPasswordStrengthColor()"></div>
+                    </div>
+                    <span class="strength-text" [style.color]="getPasswordStrengthColor()">
+                      {{ getPasswordStrengthText() }}
+                    </span>
+                  </div>
+                  <div class="field-error" *ngIf="hasError('accountInfo.password')">
+                    {{ getErrorMessage('accountInfo.password') }}
+                  </div>
+                  <div class="field-hint">密码必须包含大小写字母、数字、特殊字符，至少8位</div>
+                </div>
+
+                <!-- 确认密码 -->
+                <div class="form-field">
+                  <label class="field-label required">确认密码</label>
+                  <input 
+                    type="password"
+                    formControlName="confirmPassword"
+                    class="form-input"
+                    [class.error]="hasError('accountInfo.confirmPassword')"
+                    placeholder="请再次输入密码">
+                  <div class="field-error" *ngIf="hasError('accountInfo.confirmPassword')">
+                    {{ getErrorMessage('accountInfo.confirmPassword') }}
+                  </div>
+                </div>
+
+                <!-- 安全问题 -->
+                <div class="form-field">
+                  <label class="field-label required">安全问题</label>
+                  <select formControlName="securityQuestion" class="form-select" [class.error]="hasError('accountInfo.securityQuestion')">
+                    <option value="">请选择安全问题</option>
+                    <option value="pet">您的第一只宠物叫什么名字？</option>
+                    <option value="school">您的小学校名是什么？</option>
+                    <option value="teacher">您最喜欢的老师叫什么名字？</option>
+                    <option value="city">您的出生城市是哪里？</option>
+                  </select>
+                  <div class="field-error" *ngIf="hasError('accountInfo.securityQuestion')">
+                    {{ getErrorMessage('accountInfo.securityQuestion') }}
+                  </div>
+                </div>
+
+                <!-- 安全答案 -->
+                <div class="form-field">
+                  <label class="field-label required">安全答案</label>
+                  <input 
+                    type="text"
+                    formControlName="securityAnswer"
+                    class="form-input"
+                    [class.error]="hasError('accountInfo.securityAnswer')"
+                    placeholder="请输入安全问题的答案">
+                  <div class="field-error" *ngIf="hasError('accountInfo.securityAnswer')">
+                    {{ getErrorMessage('accountInfo.securityAnswer') }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 学习信息部分 -->
+          <div class="form-section">
+            <div class="section-header">
+              <h3>🎓 学习信息</h3>
+              <div class="section-status" [class.valid]="studentForm.get('academicInfo')?.valid">
+                {{ studentForm.get('academicInfo')?.valid ? '✅' : '❌' }}
+              </div>
+            </div>
+
+            <div formGroupName="academicInfo" class="form-group-container">
+              <div class="form-grid">
+                <!-- 年级 -->
+                <div class="form-field">
+                  <label class="field-label required">年级</label>
+                  <select formControlName="grade" class="form-select" [class.error]="hasError('academicInfo.grade')">
+                    <option value="">请选择年级</option>
+                    <option *ngFor="let grade of gradeOptions" [value]="grade.value">
+                      {{ grade.label }}
+                    </option>
+                  </select>
+                  <div class="field-error" *ngIf="hasError('academicInfo.grade')">
+                    {{ getErrorMessage('academicInfo.grade') }}
+                  </div>
+                </div>
+
+                <!-- 专业 -->
+                <div class="form-field">
+                  <label class="field-label required">专业</label>
+                  <input 
+                    type="text"
+                    formControlName="major"
+                    class="form-input"
+                    [class.error]="hasError('academicInfo.major')"
+                    placeholder="请输入专业名称">
+                  <div class="field-error" *ngIf="hasError('academicInfo.major')">
+                    {{ getErrorMessage('academicInfo.major') }}
+                  </div>
+                </div>
+
+                <!-- GPA -->
+                <div class="form-field">
+                  <label class="field-label required">GPA</label>
+                  <input 
+                    type="number"
+                    formControlName="gpa"
+                    class="form-input"
+                    [class.error]="hasError('academicInfo.gpa')"
+                    placeholder="请输入GPA (0-4)"
+                    min="0"
+                    max="4"
+                    step="0.1">
+                  <div class="field-error" *ngIf="hasError('academicInfo.gpa')">
+                    {{ getErrorMessage('academicInfo.gpa') }}
+                  </div>
+                </div>
+
+                <!-- 奖学金 -->
+                <div class="form-field full-width">
+                  <label class="checkbox-label">
+                    <input type="checkbox" formControlName="hasScholarship">
+                    <span class="checkbox-text">获得过奖学金</span>
+                  </label>
+                </div>
+
+                <!-- 奖学金金额 -->
+                <div class="form-field" *ngIf="studentForm.get('academicInfo.hasScholarship')?.value">
+                  <label class="field-label required">奖学金金额</label>
+                  <input 
+                    type="number"
+                    formControlName="scholarshipAmount"
+                    class="form-input"
+                    [class.error]="hasError('academicInfo.scholarshipAmount')"
+                    placeholder="请输入奖学金金额"
+                    min="1000">
+                  <div class="field-error" *ngIf="hasError('academicInfo.scholarshipAmount')">
+                    {{ getErrorMessage('academicInfo.scholarshipAmount') }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- 科目成绩 -->
+              <div class="subjects-section">
+                <div class="subjects-header">
+                  <h4>📚 科目成绩</h4>
+                  <button type="button" class="btn btn-secondary" (click)="addSubject()">
+                    ➕ 添加科目
+                  </button>
+                </div>
+                
+                <div formArrayName="subjects" class="subjects-list">
+                  <div *ngFor="let subject of subjectsFormArray.controls; let i = index" 
+                       [formGroupName]="i" 
+                       class="subject-item">
+                    <div class="subject-grid">
+                      <div class="form-field">
+                        <label class="field-label required">科目</label>
+                        <select formControlName="subject" class="form-select">
+                          <option value="">请选择科目</option>
+                          <option *ngFor="let option of subjectOptions" [value]="option.value">
+                            {{ option.label }}
+                          </option>
+                        </select>
+                      </div>
+                      
+                      <div class="form-field">
+                        <label class="field-label required">成绩</label>
+                        <input 
+                          type="number"
+                          formControlName="score"
+                          class="form-input"
+                          placeholder="0-100"
+                          min="0"
+                          max="100">
+                      </div>
+                      
+                      <div class="form-field">
+                        <label class="field-label required">学分</label>
+                        <input 
+                          type="number"
+                          formControlName="credit"
+                          class="form-input"
+                          placeholder="1-10"
+                          min="1"
+                          max="10">
+                      </div>
+                      
+                      <div class="form-field">
+                        <button type="button" class="btn btn-danger btn-small" (click)="removeSubject(i)">
+                          🗑️ 删除
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div *ngIf="subjectsFormArray.length === 0" class="no-subjects">
+                    <p>暂无科目信息，请点击"添加科目"按钮添加</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 联系信息部分 -->
+          <div class="form-section">
+            <div class="section-header">
+              <h3>📍 联系信息</h3>
+              <div class="section-status" [class.valid]="studentForm.get('contactInfo')?.valid">
+                {{ studentForm.get('contactInfo')?.valid ? '✅' : '❌' }}
+              </div>
+            </div>
+
+            <div formGroupName="contactInfo" class="form-group-container">
+              <!-- 地址信息 -->
+              <div class="subsection">
+                <h4>🏠 地址信息</h4>
+                <div formGroupName="address" class="form-grid">
+                  <div class="form-field">
+                    <label class="field-label required">国家</label>
+                    <input 
+                      type="text"
+                      formControlName="country"
+                      class="form-input"
+                      [class.error]="hasError('contactInfo.address.country')">
+                    <div class="field-error" *ngIf="hasError('contactInfo.address.country')">
+                      {{ getErrorMessage('contactInfo.address.country') }}
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label class="field-label required">省份</label>
+                    <input 
+                      type="text"
+                      formControlName="province"
+                      class="form-input"
+                      [class.error]="hasError('contactInfo.address.province')"
+                      placeholder="请输入省份">
+                    <div class="field-error" *ngIf="hasError('contactInfo.address.province')">
+                      {{ getErrorMessage('contactInfo.address.province') }}
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label class="field-label required">城市</label>
+                    <input 
+                      type="text"
+                      formControlName="city"
+                      class="form-input"
+                      [class.error]="hasError('contactInfo.address.city')"
+                      placeholder="请输入城市">
+                    <div class="field-error" *ngIf="hasError('contactInfo.address.city')">
+                      {{ getErrorMessage('contactInfo.address.city') }}
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label class="field-label required">详细地址</label>
+                    <input 
+                      type="text"
+                      formControlName="street"
+                      class="form-input"
+                      [class.error]="hasError('contactInfo.address.street')"
+                      placeholder="请输入详细地址">
+                    <div class="field-error" *ngIf="hasError('contactInfo.address.street')">
+                      {{ getErrorMessage('contactInfo.address.street') }}
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label class="field-label required">邮政编码</label>
+                    <input 
+                      type="text"
+                      formControlName="zipCode"
+                      class="form-input"
+                      [class.error]="hasError('contactInfo.address.zipCode')"
+                      placeholder="请输入6位邮政编码">
+                    <div class="field-error" *ngIf="hasError('contactInfo.address.zipCode')">
+                      {{ getErrorMessage('contactInfo.address.zipCode') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 紧急联系人 -->
+              <div class="subsection">
+                <h4>🚨 紧急联系人</h4>
+                <div formGroupName="emergencyContact" class="form-grid">
+                  <div class="form-field">
+                    <label class="field-label required">姓名</label>
+                    <input 
+                      type="text"
+                      formControlName="name"
+                      class="form-input"
+                      [class.error]="hasError('contactInfo.emergencyContact.name')"
+                      placeholder="请输入联系人姓名">
+                    <div class="field-error" *ngIf="hasError('contactInfo.emergencyContact.name')">
+                      {{ getErrorMessage('contactInfo.emergencyContact.name') }}
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label class="field-label required">关系</label>
+                    <select formControlName="relationship" class="form-select" [class.error]="hasError('contactInfo.emergencyContact.relationship')">
+                      <option value="">请选择关系</option>
+                      <option value="父亲">父亲</option>
+                      <option value="母亲">母亲</option>
+                      <option value="配偶">配偶</option>
+                      <option value="兄弟">兄弟</option>
+                      <option value="姐妹">姐妹</option>
+                      <option value="朋友">朋友</option>
+                    </select>
+                    <div class="field-error" *ngIf="hasError('contactInfo.emergencyContact.relationship')">
+                      {{ getErrorMessage('contactInfo.emergencyContact.relationship') }}
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label class="field-label required">电话</label>
+                    <input 
+                      type="tel"
+                      formControlName="phone"
+                      class="form-input"
+                      [class.error]="hasError('contactInfo.emergencyContact.phone')"
+                      placeholder="请输入联系人电话">
+                    <div class="field-error" *ngIf="hasError('contactInfo.emergencyContact.phone')">
+                      {{ getErrorMessage('contactInfo.emergencyContact.phone') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 偏好设置部分 -->
+          <div class="form-section">
+            <div class="section-header">
+              <h3>⚙️ 偏好设置</h3>
+              <div class="section-status" [class.valid]="studentForm.get('preferences')?.valid">
+                {{ studentForm.get('preferences')?.valid ? '✅' : '❌' }}
+              </div>
+            </div>
+
+            <div formGroupName="preferences" class="form-group-container">
+              <div class="form-grid">
+                <!-- 订阅选项 -->
+                <div class="form-field full-width">
+                  <div class="checkbox-group">
+                    <label class="checkbox-label">
+                      <input type="checkbox" formControlName="newsletter">
+                      <span class="checkbox-text">订阅邮件通知</span>
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" formControlName="notifications">
+                      <span class="checkbox-text">接收系统通知</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 主题设置 -->
+                <div class="form-field">
+                  <label class="field-label">主题</label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" formControlName="theme" value="light">
+                      <span class="radio-text">浅色</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" formControlName="theme" value="dark">
+                      <span class="radio-text">深色</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 语言设置 -->
+                <div class="form-field">
+                  <label class="field-label">语言</label>
+                  <select formControlName="language" class="form-select">
+                    <option value="zh">简体中文</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
+
+                <!-- 备注 -->
+                <div class="form-field full-width">
+                  <label class="field-label">备注</label>
+                  <textarea 
+                    formControlName="comments"
+                    class="form-textarea"
+                    [class.error]="hasError('preferences.comments')"
+                    placeholder="请输入备注信息（可选）"
+                    rows="4"></textarea>
+                  <div class="field-error" *ngIf="hasError('preferences.comments')">
+                    {{ getErrorMessage('preferences.comments') }}
+                  </div>
+                  <div class="char-count">
+                    {{ getFormControl('preferences.comments')?.value?.length || 0 }}/500
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 表单操作按钮 -->
+          <div class="form-actions">
+            <button 
+              type="submit" 
+              class="btn btn-primary btn-large"
+              [disabled]="studentForm.invalid || isSubmitting">
+              <span *ngIf="isSubmitting" class="loading-spinner"></span>
+              {{ isSubmitting ? '提交中...' : '提交表单' }}
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary btn-large"
+              (click)="resetReactiveForm()">
+              🔄 重置表单
+            </button>
+          </div>
+        </form>
+
+        <!-- 提交结果显示 -->
+        <div *ngIf="submittedData" class="submission-result">
+          <h3>✅ 表单提交成功！</h3>
+          <div class="result-data">
+            <h4>提交的数据：</h4>
+            <pre>{{ submittedData | json }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 模板驱动表单标签页 -->
+    <div class="tab-content" *ngIf="activeTab === 'template'">
+      <div class="form-container">
+        <h3>📋 模板驱动表单验证示例</h3>
+        <p class="form-description">
+          演示模板驱动表单的验证功能，包括内置验证器和自定义验证。
+        </p>
+
+        <form #templateForm="ngForm" (ngSubmit)="onSubmitTemplateForm(templateForm)" class="template-form">
+          <div class="form-section">
+            <div class="form-grid">
+              <!-- 用户名 -->
+              <div class="form-field">
+                <label class="field-label required">用户名</label>
+                <input 
+                  type="text"
+                  name="username"
+                  [(ngModel)]="templateFormData.username"
+                  #usernameField="ngModel"
+                  required
+                  minlength="3"
+                  maxlength="20"
+                  class="form-input"
+                  [class.error]="usernameField.invalid && (usernameField.dirty || usernameField.touched)"
+                  placeholder="请输入用户名">
+                <div class="field-error" *ngIf="usernameField.invalid && (usernameField.dirty || usernameField.touched)">
+                  <span *ngIf="usernameField.errors?.['required']">用户名为必填项</span>
+                  <span *ngIf="usernameField.errors?.['minlength']">用户名至少需要3个字符</span>
+                  <span *ngIf="usernameField.errors?.['maxlength']">用户名最多20个字符</span>
+                </div>
+              </div>
+
+              <!-- 邮箱 -->
+              <div class="form-field">
+                <label class="field-label required">邮箱</label>
+                <input 
+                  type="email"
+                  name="email"
+                  [(ngModel)]="templateFormData.email"
+                  #emailField="ngModel"
+                  required
+                  email
+                  class="form-input"
+                  [class.error]="emailField.invalid && (emailField.dirty || emailField.touched)"
+                  placeholder="请输入邮箱地址">
+                <div class="field-error" *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)">
+                  <span *ngIf="emailField.errors?.['required']">邮箱为必填项</span>
+                  <span *ngIf="emailField.errors?.['email']">请输入有效的邮箱地址</span>
+                </div>
+              </div>
+
+              <!-- 手机号 -->
+              <div class="form-field">
+                <label class="field-label required">手机号</label>
+                <input 
+                  type="tel"
+                  name="phone"
+                  [(ngModel)]="templateFormData.phone"
+                  #phoneField="ngModel"
+                  required
+                  pattern="^1[3-9]\d{9}$"
+                  class="form-input"
+                  [class.error]="phoneField.invalid && (phoneField.dirty || phoneField.touched)"
+                  placeholder="请输入11位手机号码">
+                <div class="field-error" *ngIf="phoneField.invalid && (phoneField.dirty || phoneField.touched)">
+                  <span *ngIf="phoneField.errors?.['required']">手机号为必填项</span>
+                  <span *ngIf="phoneField.errors?.['pattern']">请输入有效的手机号码</span>
+                </div>
+              </div>
+
+              <!-- 留言 -->
+              <div class="form-field full-width">
+                <label class="field-label">留言</label>
+                <textarea 
+                  name="message"
+                  [(ngModel)]="templateFormData.message"
+                  #messageField="ngModel"
+                  maxlength="200"
+                  class="form-textarea"
+                  placeholder="请输入留言内容（可选）"
+                  rows="4"></textarea>
+                <div class="char-count">
+                  {{ templateFormData.message.length }}/200
+                </div>
+              </div>
+
+              <!-- 协议同意 -->
+              <div class="form-field full-width">
+                <label class="checkbox-label">
+                  <input 
+                    type="checkbox"
+                    name="agreement"
+                    [(ngModel)]="templateFormData.agreement"
+                    #agreementField="ngModel"
+                    required>
+                  <span class="checkbox-text">我已阅读并同意用户协议</span>
+                </label>
+                <div class="field-error" *ngIf="agreementField.invalid && (agreementField.dirty || agreementField.touched)">
+                  <span *ngIf="agreementField.errors?.['required']">必须同意用户协议才能提交</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 表单状态显示 -->
+          <div class="form-status">
+            <div class="status-item">
+              <span class="status-label">表单状态:</span>
+              <span class="status-value" [class.valid]="templateForm.valid" [class.invalid]="templateForm.invalid">
+                {{ templateForm.valid ? '✅ 有效' : '❌ 无效' }}
+              </span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">是否被触摸:</span>
+              <span class="status-value">{{ templateForm.touched ? '是' : '否' }}</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">是否被修改:</span>
+              <span class="status-value">{{ templateForm.dirty ? '是' : '否' }}</span>
+            </div>
+          </div>
+
+          <!-- 表单操作按钮 -->
+          <div class="form-actions">
+            <button 
+              type="submit" 
+              class="btn btn-primary btn-large"
+              [disabled]="templateForm.invalid">
+              📤 提交表单
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary btn-large"
+              (click)="resetTemplateForm(templateForm)">
+              🔄 重置表单
+            </button>
+          </div>
+        </form>
+
+        <!-- 模板表单提交结果 -->
+        <div *ngIf="templateSubmittedData" class="submission-result">
+          <h3>✅ 模板表单提交成功！</h3>
+          <div class="result-data">
+            <h4>提交的数据：</h4>
+            <pre>{{ templateSubmittedData | json }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 理论与最佳实践标签页 -->
+    <div class="tab-content" *ngIf="activeTab === 'theory'">
+      <div class="theory-container">
+        <div class="theory-section">
+          <h3>📚 表单验证理论</h3>
+          
+          <div class="theory-card">
+            <h4>🎯 响应式表单 vs 模板驱动表单</h4>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>特性</th>
+                    <th>响应式表单</th>
+                    <th>模板驱动表单</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>数据模型</td>
+                    <td>显式，在组件类中定义</td>
+                    <td>隐式，由指令创建</td>
+                  </tr>
+                  <tr>
+                    <td>数据流</td>
+                    <td>同步</td>
+                    <td>异步</td>
+                  </tr>
+                  <tr>
+                    <td>表单验证</td>
+                    <td>函数</td>
+                    <td>指令</td>
+                  </tr>
+                  <tr>
+                    <td>不可变性</td>
+                    <td>不可变</td>
+                    <td>可变</td>
+                  </tr>
+                  <tr>
+                    <td>可伸缩性</td>
+                    <td>访问底层API，可伸缩性更高</td>
+                    <td>只能通过指令访问</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="theory-card">
+            <h4>✨ 验证器类型</h4>
+            <div class="validators-grid">
+              <div class="validator-item">
+                <h5>内置验证器</h5>
+                <ul>
+                  <li><code>Validators.required</code> - 必填验证</li>
+                  <li><code>Validators.email</code> - 邮箱格式验证</li>
+                  <li><code>Validators.minLength</code> - 最小长度验证</li>
+                  <li><code>Validators.maxLength</code> - 最大长度验证</li>
+                  <li><code>Validators.pattern</code> - 正则表达式验证</li>
+                  <li><code>Validators.min/max</code> - 数值范围验证</li>
+                </ul>
+              </div>
+              
+              <div class="validator-item">
+                <h5>自定义验证器</h5>
+                <ul>
+                  <li>同步验证器 - 立即返回验证结果</li>
+                  <li>异步验证器 - 返回Promise或Observable</li>
+                  <li>跨字段验证器 - 验证多个字段之间的关系</li>
+                  <li>条件验证器 - 根据条件动态应用验证</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="theory-card">
+            <h4>🏆 最佳实践</h4>
+            <div class="best-practices">
+              <div class="practice-item">
+                <div class="practice-icon">💡</div>
+                <div class="practice-content">
+                  <h5>用户体验优先</h5>
+                  <p>验证错误信息应该清晰、友好，帮助用户理解如何修正错误</p>
+                </div>
+              </div>
+              
+              <div class="practice-item">
+                <div class="practice-icon">⚡</div>
+                <div class="practice-content">
+                  <h5>实时验证</h5>
+                  <p>在用户输入时提供即时反馈，而不是等到提交时才显示错误</p>
+                </div>
+              </div>
+              
+              <div class="practice-item">
+                <div class="practice-icon">🔒</div>
+                <div class="practice-content">
+                  <h5>前后端验证</h5>
+                  <p>前端验证提升用户体验，后端验证确保数据安全</p>
+                </div>
+              </div>
+              
+              <div class="practice-item">
+                <div class="practice-icon">🎨</div>
+                <div class="practice-content">
+                  <h5>视觉反馈</h5>
+                  <p>使用颜色、图标等视觉元素明确表示验证状态</p>
+                </div>
+              </div>
+              
+              <div class="practice-item">
+                <div class="practice-icon">📱</div>
+                <div class="practice-content">
+                  <h5>响应式设计</h5>
+                  <p>确保表单在各种设备上都能正常工作和显示</p>
+                </div>
+              </div>
+              
+                              <div class="practice-item">
+                <div class="practice-icon">♿</div>
+                <div class="practice-content">
+                  <h5>无障碍访问</h5>
+                  <p>支持键盘导航，提供适当的ARIA标签</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="theory-card">
+            <h4>🔧 代码示例</h4>
+            <div class="code-examples">
+              <div class="code-example">
+                <h5>自定义验证器示例</h5>
+                <pre><code>// 密码强度验证器
+static passwordStrength(control: AbstractControl): ValidationErrors | null {{ '{' }}
+  const value = control.value;
+  if (!value) return null;
+
+  const hasNumber = /[0-9]/.test(value);
+  const hasLowercase = /[a-z]/.test(value);
+  const hasUppercase = /[A-Z]/.test(value);
+  const hasSpecial = /[!#$%^&*(),.?":{{ '{' }}{{ '}' }}|&lt;&gt;]/.test(value);
+  const isValidLength = value.length &gt;= 8;
+
+  const passwordValid = hasNumber && hasLowercase && 
+                        hasUppercase && hasSpecial && isValidLength;
+
+  return passwordValid ? null : {{ '{' }}
+    passwordStrength: {{ '{' }}
+      hasNumber, hasLowercase, hasUppercase, hasSpecial, isValidLength
+    {{ '}' }}
+  {{ '}' }};
+{{ '}' }}</code></pre>
+              </div>
+
+              <div class="code-example">
+                <h5>异步验证器示例</h5>
+                <pre><code>// 异步邮箱验证器
+static asyncEmailValidator(control: AbstractControl): Promise&lt;ValidationErrors | null&gt; {{ '{' }}
+  return new Promise((resolve) =&gt; {{ '{' }}
+    setTimeout(() =&gt; {{ '{' }}
+      const existingEmails = ['', ''];
+      if (existingEmails.includes(control.value)) {{ '{' }}
+        resolve({{ '{' }} emailExists: true {{ '}' }});
+      {{ '}' }} else {{ '{' }}
+        resolve(null);
+      {{ '}' }}
+    {{ '}' }}, 1000);
+  {{ '}' }});
+{{ '}' }}</code></pre>
+              </div>
+
+              <div class="code-example">
+                <h5>跨字段验证器示例</h5>
+                <pre><code>// 确认密码验证器
+static confirmPassword(passwordField: string) {{ '{' }}
+  return (control: AbstractControl): ValidationErrors | null =&gt; {{ '{' }}
+    if (!control.parent) return null;
+    const password = control.parent.get(passwordField);
+    const confirmPassword = control;
+    
+    if (password && confirmPassword && 
+        password.value !== confirmPassword.value) {{ '{' }}
+      return {{ '{' }} confirmPassword: true {{ '}' }};
+    {{ '}' }}
+    return null;
+  {{ '}' }};
+{{ '}' }}</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="theory-card">
+            <h4>📊 表单状态管理</h4>
+            <div class="form-states">
+              <div class="state-item">
+                <div class="state-header">
+                  <span class="state-icon">🔄</span>
+                  <h5>pristine / dirty</h5>
+                </div>
+                <p>表示表单是否被用户修改过。pristine表示未修改，dirty表示已修改。</p>
+              </div>
+
+              <div class="state-item">
+                <div class="state-header">
+                  <span class="state-icon">👆</span>
+                  <h5>touched / untouched</h5>
+                </div>
+                <p>表示用户是否与表单控件交互过。touched表示已交互，untouched表示未交互。</p>
+              </div>
+
+              <div class="state-item">
+                <div class="state-header">
+                  <span class="state-icon">✅</span>
+                  <h5>valid / invalid</h5>
+                </div>
+                <p>表示表单控件的验证状态。valid表示通过验证，invalid表示验证失败。</p>
+              </div>
+
+              <div class="state-item">
+                <div class="state-header">
+                  <span class="state-icon">⏳</span>
+                  <h5>pending</h5>
+                </div>
+                <p>表示异步验证正在进行中。在异步验证完成前，控件处于pending状态。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="theory-card">
+            <h4>🚀 性能优化建议</h4>
+            <div class="performance-tips">
+              <div class="tip-item">
+                <span class="tip-number">1</span>
+                <div class="tip-content">
+                  <h5>使用OnPush变更检测策略</h5>
+                  <p>对于复杂表单，使用OnPush策略可以显著提升性能</p>
+                </div>
+              </div>
+
+              <div class="tip-item">
+                <span class="tip-number">2</span>
+                <div class="tip-content">
+                  <h5>合理使用异步验证器</h5>
+                  <p>添加适当的防抖延迟，避免频繁的服务器请求</p>
+                </div>
+              </div>
+
+              <div class="tip-item">
+                <span class="tip-number">3</span>
+                <div class="tip-content">
+                  <h5>使用trackBy函数</h5>
+                  <p>在FormArray中使用trackBy函数优化列表渲染性能</p>
+                </div>
+              </div>
+
+              <div class="tip-item">
+                <span class="tip-number">4</span>
+                <div class="tip-content">
+                  <h5>懒加载验证</h5>
+                  <p>对于复杂验证逻辑，可以考虑在特定条件下才加载验证器</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="theory-card">
+            <h4>🔍 调试技巧</h4>
+            <div class="debug-tips">
+              <div class="debug-item">
+                <h5>💻 开发工具</h5>
+                <ul>
+                  <li>使用Angular DevTools查看表单状态</li>
+                  <li>在组件中添加日志输出调试验证逻辑</li>
+                  <li>使用浏览器开发者工具查看DOM状态</li>
+                </ul>
+              </div>
+
+              <div class="debug-item">
+                <h5>📝 常见问题</h5>
+                <ul>
+                  <li>验证器没有触发：检查是否正确绑定到FormControl</li>
+                  <li>异步验证器不工作：确保返回Promise或Observable</li>
+                  <li>错误信息不显示：检查错误显示的条件逻辑</li>
+                  <li>表单不提交：验证表单的valid状态</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

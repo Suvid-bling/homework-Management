@@ -46,7 +46,7 @@ export class AuthorIntroComponent {
     gender: '男',
     class: '计科专起本24-1',
     studentId: '24951060135',
-    email: 'suziyi@example.com',
+    email: 'suziyi@163.com',
     github: 'github.com/suziyi',
     motto: '永不言弃，追求卓越',
     avatar: '/assets/images/suzy2.jpg' 

@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
       title: '服务与依赖注入',
       description: '演示Angular服务的创建和使用，以及依赖注入的实现方式和最佳实践。',
       tags: ['服务', '依赖注入', '待完成'],
-      status: 'completed',
+      status: 'pending',
       route: '/assignments/service_di'
     },
     {
@@ -91,16 +91,16 @@ export class DashboardComponent implements OnInit {
       id: 7,
       title: '表单验证',
       description: '展示Angular响应式表单和模板驱动表单的验证功能。',
-      tags: ['表单', '验证', '待完成'],
-      status: 'pending',
+      tags: ['表单', '验证'],
+      status: 'completed',
       route: '/assignments/form-validation'
     },
     {
       id: 8,
       title: 'HTTP请求处理',
       description: '演示如何使用HttpClient进行API调用和数据处理。',
-      tags: ['HTTP', 'API', '待完成'],
-      status: 'pending',
+      tags: ['HTTP', 'API'],
+      status: 'completed',
       route: '/assignments/http-requests'
     },
     {
@@ -130,8 +130,8 @@ export class DashboardComponent implements OnInit {
         {
       id: 12,
       title: 'TS画板',
-      description: '演示Angular服务的创建和使用，以及依赖注入的实现方式和最佳实践。',
-      tags: ['服务', '依赖注入', '待完成'],
+      description: '自定义代码执行',
+      tags: ['模块化'],
       status: 'completed',
       route: '/assignments/ts-canvas'
     },
@@ -139,9 +139,9 @@ export class DashboardComponent implements OnInit {
   ];
 
   stats = {
-    totalAssignments: 10,
-    completedModules: 3,
-    completionRate: 100,
+    totalAssignments: 12,
+    completedModules: 11,
+    completionRate: 90,
     expectedGrade: 'A+'
   };
 

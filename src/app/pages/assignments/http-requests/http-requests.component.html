@@ -1,0 +1,508 @@
+<!-- src/app/pages/assignments/http-requests/http-requests.component.html -->
+<div class="http-requests-container">
+  <!-- 页面标题 -->
+  <div class="page-header">
+    <h1 class="page-title">
+      <span class="title-icon">🌐</span>
+      HTTP 请求处理演示
+    </h1>
+    <p class="page-description">
+      演示Angular中的HTTP客户端使用方法，包括GET、POST、PUT、DELETE等各种请求类型，
+      以及错误处理、请求拦截、数据缓存等高级特性。
+    </p>
+  </div>
+
+  <!-- 统计面板 -->
+  <div class="stats-panel">
+    <div class="stat-item">
+      <div class="stat-value">{{ stats.totalRequests }}</div>
+      <div class="stat-label">总请求数</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value success">{{ stats.successfulRequests }}</div>
+      <div class="stat-label">成功请求</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value error">{{ stats.failedRequests }}</div>
+      <div class="stat-label">失败请求</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">{{ stats.averageResponseTime }}ms</div>
+      <div class="stat-label">平均响应时间</div>
+    </div>
+  </div>
+
+  <!-- 错误提示 -->
+  <div class="error-alert" *ngIf="errorMessage">
+    <span class="error-icon">⚠️</span>
+    <span class="error-text">{{ errorMessage }}</span>
+    <button class="error-close" >×</button>
+  </div>
+
+  <!-- 标签页导航 -->
+  <div class="tabs-container">
+    <div class="tab-nav">
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'get-requests'"
+        (click)="switchTab('get-requests')">
+        📥 GET 请求
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'post-requests'"
+        (click)="switchTab('post-requests')">
+        📤 POST 请求
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'put-delete'"
+        (click)="switchTab('put-delete')">
+        🔄 PUT/DELETE 请求
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'logs'"
+        (click)="switchTab('logs')">
+        📋 请求日志
+      </button>
+    </div>
+
+    <!-- GET 请求标签页 -->
+    <div class="tab-content" *ngIf="activeTab === 'get-requests'">
+      <div class="content-section">
+        <h3>用户数据获取</h3>
+        <div class="action-bar">
+          <button class="btn btn-primary" (click)="loadUsers()" [disabled]="loading.users">
+            <span class="loading-spinner" *ngIf="loading.users"></span>
+            {{ loading.users ? '加载中...' : '获取用户列表' }}
+          </button>
+        </div>
+        
+        <div class="data-grid" *ngIf="users.length > 0">
+          <div class="grid-header">
+            <div class="grid-cell">ID</div>
+            <div class="grid-cell">姓名</div>
+            <div class="grid-cell">用户名</div>
+            <div class="grid-cell">邮箱</div>
+            <div class="grid-cell">电话</div>
+            <div class="grid-cell">网站</div>
+          </div>
+          <div class="grid-row" *ngFor="let user of users">
+            <div class="grid-cell">{{ user.id }}</div>
+            <div class="grid-cell">{{ user.name }}</div>
+            <div class="grid-cell">{{ user.username }}</div>
+            <div class="grid-cell">{{ user.email }}</div>
+            <div class="grid-cell">{{ user.phone }}</div>
+            <div class="grid-cell">{{ user.website }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>帖子数据与搜索</h3>
+        
+        <!-- 搜索和过滤 -->
+        <div class="search-bar">
+          <div class="search-input-group">
+            <input 
+              type="text" 
+              class="search-input"
+              [(ngModel)]="searchTerm"
+              (input)="onSearchChange()"
+              placeholder="搜索帖子标题或内容...">
+            <button class="btn btn-secondary" (click)="clearSearch()" *ngIf="searchTerm">
+              清除
+            </button>
+          </div>
+          
+          <div class="filter-group">
+            <select class="filter-select" [(ngModel)]="selectedUserId" (change)="onUserFilterChange()">
+              <option [value]="null">所有用户</option>
+              <option [value]="user.id" *ngFor="let user of users">{{ user.name }}</option>
+            </select>
+            <button class="btn btn-secondary" (click)="clearFilter()" *ngIf="selectedUserId">
+              清除过滤
+            </button>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-primary" (click)="loadPosts()" [disabled]="loading.posts">
+            <span class="loading-spinner" *ngIf="loading.posts"></span>
+            {{ loading.posts ? '加载中...' : '获取帖子列表' }}
+          </button>
+        </div>
+
+        <div class="posts-grid" *ngIf="posts.length > 0">
+          <div class="post-card" *ngFor="let post of posts">
+            <div class="post-header">
+              <h4 class="post-title">{{ post.title }}</h4>
+              <span class="post-author">作者: {{ getUserName(post.userId) }}</span>
+            </div>
+            <p class="post-body">{{ post.body }}</p>
+            <div class="post-actions">
+              <button class="btn btn-small" (click)="loadComments(post.id)">
+                查看评论
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 评论列表 -->
+        <div class="comments-section" *ngIf="comments.length > 0">
+          <h4>评论列表</h4>
+          <div class="comment-item" *ngFor="let comment of comments">
+            <div class="comment-header">
+              <strong>{{ comment.name }}</strong>
+              <span class="comment-email">({{ comment.email }})</span>
+            </div>
+            <p class="comment-body">{{ comment.body }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 请求标签页 -->
+    <div class="tab-content" *ngIf="activeTab === 'post-requests'">
+      <div class="content-section">
+        <h3>创建新帖子</h3>
+        <form class="form" (ngSubmit)="createPost()">
+          <div class="form-group">
+            <label for="postTitle">标题:</label>
+            <input 
+              id="postTitle"
+              type="text" 
+              class="form-input"
+              [(ngModel)]="newPost.title"
+              name="postTitle"
+              placeholder="请输入帖子标题"
+              required>
+          </div>
+          
+          <div class="form-group">
+            <label for="postBody">内容:</label>
+            <textarea 
+              id="postBody"
+              class="form-textarea"
+              [(ngModel)]="newPost.body"
+              name="postBody"
+              placeholder="请输入帖子内容"
+              rows="4"
+              required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="postUserId">用户ID:</label>
+            <select id="postUserId" class="form-select" [(ngModel)]="newPost.userId" name="postUserId">
+              <option [value]="user.id" *ngFor="let user of users">{{ user.name }} (ID: {{ user.id }})</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" [disabled]="loading.creating">
+            <span class="loading-spinner" *ngIf="loading.creating"></span>
+            {{ loading.creating ? '创建中...' : '创建帖子' }}
+          </button>
+        </form>
+      </div>
+
+      <div class="content-section">
+        <h3>创建新用户</h3>
+        <form class="form" (ngSubmit)="createUser()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="userName">姓名:</label>
+              <input 
+                id="userName"
+                type="text" 
+                class="form-input"
+                [(ngModel)]="newUser.name"
+                name="userName"
+                placeholder="请输入姓名"
+                required>
+            </div>
+            
+            <div class="form-group">
+              <label for="userUsername">用户名:</label>
+              <input 
+                id="userUsername"
+                type="text" 
+                class="form-input"
+                [(ngModel)]="newUser.username"
+                name="userUsername"
+                placeholder="请输入用户名">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="userEmail">邮箱:</label>
+              <input 
+                id="userEmail"
+                type="email" 
+                class="form-input"
+                [(ngModel)]="newUser.email"
+                name="userEmail"
+                placeholder="请输入邮箱"
+                required>
+            </div>
+            
+            <div class="form-group">
+              <label for="userPhone">电话:</label>
+              <input 
+                id="userPhone"
+                type="tel" 
+                class="form-input"
+                [(ngModel)]="newUser.phone"
+                name="userPhone"
+                placeholder="请输入电话">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="userWebsite">网站:</label>
+            <input 
+              id="userWebsite"
+              type="url" 
+              class="form-input"
+              [(ngModel)]="newUser.website"
+              name="userWebsite"
+              placeholder="请输入网站地址">
+          </div>
+          
+          <button type="submit" class="btn btn-primary" [disabled]="loading.creating">
+            <span class="loading-spinner" *ngIf="loading.creating"></span>
+            {{ loading.creating ? '创建中...' : '创建用户' }}
+          </button>
+        </form>
+      </div>
+
+      <!-- 已创建的帖子列表 -->
+      <div class="content-section" *ngIf="posts.length > 0">
+        <h3>帖子管理</h3>
+        <div class="posts-management">
+          <div class="post-item" *ngFor="let post of posts">
+            <div class="post-content" *ngIf="editingPost?.id !== post.id">
+              <h4>{{ post.title }}</h4>
+              <p>{{ post.body }}</p>
+              <div class="post-meta">
+                <span>作者: {{ getUserName(post.userId) }}</span>
+                <span>ID: {{ post.id }}</span>
+              </div>
+            </div>
+            
+            <!-- 编辑模式 -->
+            <div class="post-edit" *ngIf="editingPost?.id === post.id">
+              <div class="form-group">
+                <input 
+                  type="text" 
+                  class="form-input"
+                  placeholder="帖子标题">
+              </div>
+              <div class="form-group">
+                <textarea 
+                  class="form-textarea"
+                  placeholder="帖子内容"
+                  rows="3"></textarea>
+              </div>
+            </div>
+            
+            <div class="post-actions">
+              <div *ngIf="editingPost?.id !== post.id">
+                <button class="btn btn-small btn-secondary" (click)="editPost(post)">
+                  编辑
+                </button>
+                <button class="btn btn-small btn-danger" (click)="deletePost(post.id)">
+                  删除
+                </button>
+              </div>
+              <div *ngIf="editingPost?.id === post.id">
+                <button class="btn btn-small btn-primary" (click)="updatePost()" [disabled]="loading.updating">
+                  <span class="loading-spinner" *ngIf="loading.updating"></span>
+                  保存
+                </button>
+                <button class="btn btn-small btn-secondary" (click)="cancelEdit()">
+                  取消
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PUT/DELETE 请求标签页 -->
+    <div class="tab-content" *ngIf="activeTab === 'put-delete'">
+      <div class="content-section">
+        <h3>待办事项管理</h3>
+        <div class="action-bar">
+          <button class="btn btn-primary" (click)="loadTodos()" [disabled]="loading.todos">
+            <span class="loading-spinner" *ngIf="loading.todos"></span>
+            {{ loading.todos ? '加载中...' : '获取待办事项' }}
+          </button>
+        </div>
+
+        <div class="todos-list" *ngIf="todos.length > 0">
+          <div class="todo-item" *ngFor="let todo of todos" [class.completed]="todo.completed">
+            <div class="todo-content">
+              <div class="todo-checkbox">
+                <input 
+                  type="checkbox" 
+                  [checked]="todo.completed"
+                  (change)="updateTodo(todo)"
+                  [disabled]="loading.updating">
+              </div>
+              <div class="todo-text">
+                <span class="todo-title" [class.completed]="todo.completed">
+                  {{ todo.title }}
+                </span>
+                <span class="todo-meta">
+                  ID: {{ todo.id }} | 用户: {{ getUserName(todo.userId) }}
+                </span>
+              </div>
+            </div>
+            <div class="todo-actions">
+              <span class="todo-status" [class]="todo.completed ? 'status-completed' : 'status-pending'">
+                {{ todo.completed ? '已完成' : '待完成' }}
+              </span>
+              <button class="btn btn-small btn-danger" (click)="deleteTodo(todo.id)" [disabled]="loading.deleting">
+                删除
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>HTTP 方法说明</h3>
+        <div class="methods-explanation">
+          <div class="method-card">
+            <div class="method-header get">
+              <span class="method-name">GET</span>
+              <span class="method-description">获取数据</span>
+            </div>
+            <ul class="method-features">
+              <li>用于从服务器获取数据</li>
+              <li>请求是幂等的，不会改变服务器状态</li>
+              <li>参数通过URL查询字符串传递</li>
+              <li>可以被缓存</li>
+            </ul>
+          </div>
+
+          <div class="method-card">
+            <div class="method-header post">
+              <span class="method-name">POST</span>
+              <span class="method-description">创建数据</span>
+            </div>
+            <ul class="method-features">
+              <li>用于向服务器发送数据创建新资源</li>
+              <li>请求不是幂等的</li>
+              <li>数据在请求体中发送</li>
+              <li>不能被缓存</li>
+            </ul>
+          </div>
+
+          <div class="method-card">
+            <div class="method-header put">
+              <span class="method-name">PUT</span>
+              <span class="method-description">更新数据</span>
+            </div>
+            <ul class="method-features">
+              <li>用于完全更新现有资源</li>
+              <li>请求是幂等的</li>
+              <li>如果资源不存在可能会创建</li>
+              <li>需要发送完整的资源数据</li>
+            </ul>
+          </div>
+
+          <div class="method-card">
+            <div class="method-header delete">
+              <span class="method-name">DELETE</span>
+              <span class="method-description">删除数据</span>
+            </div>
+            <ul class="method-features">
+              <li>用于删除指定的资源</li>
+              <li>请求是幂等的</li>
+              <li>成功删除后资源不再存在</li>
+              <li>可能返回删除的资源信息</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 请求日志标签页 -->
+    <div class="tab-content" *ngIf="activeTab === 'logs'">
+      <div class="content-section">
+        <div class="logs-header">
+          <h3>请求日志</h3>
+          <button class="btn btn-secondary" (click)="clearLogs()" *ngIf="requestLogs.length > 0">
+            清空日志
+          </button>
+        </div>
+
+        <div class="logs-container" *ngIf="requestLogs.length > 0; else noLogs">
+          <div class="log-item" *ngFor="let log of requestLogs">
+            <div class="log-method" [class]="getMethodClass(log.method)">
+              {{ log.method }}
+            </div>
+            <div class="log-url">{{ log.url }}</div>
+            <div class="log-status" [class]="getStatusClass(log.success)">
+              {{ log.status }}
+            </div>
+            <div class="log-duration">{{ log.duration }}ms</div>
+            <div class="log-time">{{ formatTime(log.timestamp) }}</div>
+          </div>
+        </div>
+
+        <ng-template #noLogs>
+          <div class="no-logs">
+            <span class="no-logs-icon">📋</span>
+            <span class="no-logs-text">暂无请求日志</span>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="content-section">
+        <h3>技术特性说明</h3>
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">🔄</div>
+            <h4>自动重试</h4>
+            <p>请求失败时自动重试，提高请求成功率</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">⏱️</div>
+            <h4>超时处理</h4>
+            <p>设置请求超时时间，避免长时间等待</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">🚫</div>
+            <h4>错误处理</h4>
+            <p>统一的错误处理机制，友好的错误提示</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">🔍</div>
+            <h4>搜索防抖</h4>
+            <p>搜索输入防抖处理，减少不必要的请求</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">📊</div>
+            <h4>请求监控</h4>
+            <p>记录请求日志，监控请求性能和状态</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">🎯</div>
+            <h4>响应式操作</h4>
+            <p>使用RxJS操作符处理异步数据流</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

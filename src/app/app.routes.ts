@@ -44,11 +44,11 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/assignments/component-communication/component_communication').then(m => m.ComponentCommunicationComponent),
         title: '模块化编程-子类父类 - Angular作业管理系统'
       },
-      {
-        path: 'service_di',
-        loadComponent: () => import('./pages/assignments/service_di/service_di.component').then(m => m.ServiceDiComponent),
-        title: '模块化编程-服务与注入 - Angular作业管理系统'
-      },
+      // {
+      //   path: 'service_di',
+      //   loadComponent: () => import('./pages/assignments/service_di/service_di.component').then(m => m.ServiceDiComponent),
+      //   title: '模块化编程-服务与注入 - Angular作业管理系统'
+      // },
       {
         path: 'flexbox-layout-demo',
         loadComponent: () => import('./pages/assignments/flexbox-layout-demo/flexbox_layout.component').then(m => m.FlexboxLayoutDemoComponent),
@@ -74,11 +74,21 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/assignments/routing-demo/routing-demo.component').then(m => m.RoutingDemoComponent),
         title: '路由与导航演示 - Angular作业管理系统'
       },
-            {
+      {
         path: 'pipes-demo',
         loadComponent: () => import('./pages/assignments/pipes-demo/pipes-demo.component').then(m => m.PipesDemoComponent),
         title: '路由与导航演示 - Angular作业管理系统'
-      }
+      },
+      {
+        path: 'form-validation',
+        loadComponent: () => import('./pages/assignments/form-validation/form_validation.component').then(m => m.FormValidationComponent),
+        title: '表单验证 - Angular作业管理系统'
+      },
+      {
+        path: 'http-requests',
+        loadComponent: () => import('./pages/assignments/http-requests/http-requests.component').then(m => m.HttpRequestsComponent),
+        title: '表单验证 - Angular作业管理系统'
+      },
       
       // 其他路由暂时注释掉，直到对应组件创建完成
       /*
